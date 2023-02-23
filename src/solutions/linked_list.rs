@@ -49,6 +49,12 @@ impl Solution {
         mut list1: Option<Box<ListNode>>,
         mut list2: Option<Box<ListNode>>,
     ) -> Option<Box<ListNode>> {
+        if list1 == None {
+            list2
+        }
+        if list2 == None {
+            list1
+        }
         let mut dummy = None;
         let mut p_next = &mut dummy;
         while list1.is_some() && list2.is_some() {
