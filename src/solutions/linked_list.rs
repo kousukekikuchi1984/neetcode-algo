@@ -60,7 +60,7 @@ impl Solution {
                 l2
             };
             mem::swap(p_next, l);
-            mem::swap(l, &mut p_next.as_ref().unwrap().next);
+            mem::swap(l, &mut p_next.as_mut().unwrap().next);
             p_next = &mut p_next.as_mut().unwrap().next;
         }
         mem::swap(
