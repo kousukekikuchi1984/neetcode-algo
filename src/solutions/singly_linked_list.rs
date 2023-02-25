@@ -26,27 +26,6 @@ impl Solution {
         prev
     }
 
-    pub fn reverse_list_recursive(&self, head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
-        self._reverse_list(None, head)
-    }
-
-    pub fn _reverse_list(
-        &self,
-        prev: Option<Box<ListNode>>,
-        head: Option<Box<ListNode>>,
-    ) -> Option<Box<ListNode>> {
-        let mut cur = head;
-        let mut next = None;
-
-        if cur.is_some() {
-            let mut n = cur.take().unwrap();
-            next = n.next.take();
-            n.next = prev;
-            self._reverse_list(Some(n), next);
-        }
-        prev
-    }
-
     pub fn merge_two_lists(
         mut list1: Option<Box<ListNode>>,
         mut list2: Option<Box<ListNode>>,
