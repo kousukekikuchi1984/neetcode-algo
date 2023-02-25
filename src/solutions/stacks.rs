@@ -1,3 +1,7 @@
+use std::collections::HashMap;
+
+struct Solution {}
+
 impl Solution {
     pub fn cal_points(operations: Vec<String>) -> i32 {
         /* x: integer

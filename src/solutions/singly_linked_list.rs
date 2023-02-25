@@ -1,5 +1,7 @@
 use std::mem;
 
+struct Solution {}
+
 // Definition for singly-linked list.
 #[derive(PartialEq, Eq, Clone, Debug)]
 pub struct ListNode {
@@ -50,10 +52,10 @@ impl Solution {
         mut list2: Option<Box<ListNode>>,
     ) -> Option<Box<ListNode>> {
         if list1 == None {
-            list2
+            return list2;
         }
         if list2 == None {
-            list1
+            return list1;
         }
         let mut dummy = None;
         let mut p_next = &mut dummy;
@@ -78,5 +80,15 @@ impl Solution {
             },
         );
         dummy
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::Solution;
+
+    #[test]
+    fn test_list() {
+        Solution::reverse_list(None);
     }
 }

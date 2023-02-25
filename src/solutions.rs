@@ -1,4 +1,5 @@
+mod doubly_linked_list;
 mod dynamic_arrays;
-mod linked_list;
+mod singly_linked_list;
 mod stacks;
 mod static_arrays;

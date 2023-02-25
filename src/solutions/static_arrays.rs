@@ -1,3 +1,5 @@
+struct Solution {}
+
 impl Solution {
     pub fn remove_element(nums: &mut Vec<i32>, val: i32) -> i32 {
         while let Some(index) = nums.iter().position(|v| *v == val) {
@@ -16,5 +18,16 @@ impl Solution {
             }
         }
         return (cur + 1) as i32;
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::Solution;
+
+    #[test]
+    fn test_remove_element() {
+        let mut nums: Vec<i32> = vec![1];
+        Solution::remove_element(&mut nums, 1);
     }
 }

@@ -8,3 +8,13 @@ impl Solution {
         ans
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::Solution;
+
+    #[test]
+    fn test_get_concatenation() {
+        Solution::get_concatenation(vec![1, 2, 3]);
+    }
+}
