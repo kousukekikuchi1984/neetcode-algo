@@ -16,18 +16,18 @@ impl ListNode {
     }
 }
 
-fn _reverse_list(
-    head: Option<Box<ListNode>>,
-    mut prev: Option<Box<ListNode>>,
-) -> Option<Box<ListNode>> {
-    if let Some(mut curr) = head {
-        let temp = curr.next.take();
-        curr.next = prev;
-        prev = Some(curr);
-        _reverse_list(temp, prev);
-    }
-    return prev;
-}
+// fn _reverse_list(
+//     head: Option<Box<ListNode>>,
+//     mut prev: Option<Box<ListNode>>,
+// ) -> Option<Box<ListNode>> {
+//     if let Some(mut curr) = head {
+//         let temp = curr.next.take();
+//         curr.next = prev;
+//         prev = Some(curr);
+//         _reverse_list(temp, prev);
+//     }
+//     return prev;
+// }
 
 impl Solution {
     pub fn reverse_list(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
@@ -75,9 +75,9 @@ impl Solution {
         dummy
     }
 
-    fn reverse_list_recursive(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
-        _reverse_list(None, head)
-    }
+    // fn reverse_list_recursive(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
+    //     _reverse_list(None, head)
+    // }
 }
 
 #[cfg(test)]
