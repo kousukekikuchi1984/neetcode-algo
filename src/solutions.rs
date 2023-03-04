@@ -5,3 +5,4 @@ mod stacks;
 mod static_arrays;
 mod queues;
 mod fibonacci;
+mod sort;
