@@ -57,6 +57,36 @@ impl Solution {
         }
         merge_sort(nums, 0, nums.len() - 1)
     }
+
+    pub fn quick_sort_array(mut nums: Vec<i32>) -> Vec<i32> {
+        fn quick_sort(nums: &mut [i32], start: usize, end: usize) {
+            if (end + 1 - start) <= 1 {
+                return;
+            }
+            let pivot_idx = partition(nums, start, end);
+            if pivot_idx > 0 {
+                quick_sort(nums, start, pivot_idx - 1);
+            }
+            quick_sort(nums, pivot_idx + 1, end);
+        }
+
+        fn partition(nums: &mut [i32], start: usize, end: usize) -> usize {
+            let pivot = nums[end];
+            let mut cur = start;
+            for i in start..end {
+                if pivot > nums[i] {
+                    nums.swap(cur, i);
+                    cur += 1;
+                }
+            }
+            nums.swap(cur, end);
+            return cur;
+        }
+
+        let end = nums.len() - 1;
+        quick_sort(&mut nums, 0, end);
+        return nums;
+    }
 }
 
 #[cfg(test)]
@@ -75,6 +105,14 @@ mod tests {
     fn test_merge_sort_array() {
         let mut lis: Vec<i32> = vec![5, 4, 3, 2, 1];
         let actual = Solution::merge_sort_array(&mut lis);
+        let expected = vec![1, 2, 3, 4, 5];
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn test_quick_sort_array() {
+        let mut lis: Vec<i32> = vec![5, 4, 3, 2, 1];
+        let actual = Solution::quick_sort_array(lis);
         let expected = vec![1, 2, 3, 4, 5];
         assert_eq!(actual, expected);
     }
