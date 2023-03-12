@@ -87,6 +87,31 @@ impl Solution {
         quick_sort(&mut nums, 0, end);
         return nums;
     }
+
+    pub fn find_kth_largest(mut nums: Vec<i32>, k: i32) -> i32 {
+        let k = nums.len() - k as usize;
+
+        fn quick_select(nums: &mut [i32], start: usize, end: usize, k: usize) -> i32 {
+            let pivot = nums[end];
+            let mut cur = start;
+            for i in start..end {
+                if pivot > nums[i] {
+                    nums.swap(cur, i);
+                    cur += 1;
+                }
+            }
+            nums.swap(cur, end);
+            if cur > k as usize {
+                return quick_select(nums, start, cur - 1, k);
+            } else if cur < k {
+                return quick_select(nums, cur + 1, end, k);
+            } else {
+                return nums[cur];
+            }
+        }
+        let end = nums.len() - 1;
+        return quick_select(&mut nums, 0, end, k);
+    }
 }
 
 #[cfg(test)]
@@ -115,5 +140,16 @@ mod tests {
         let actual = Solution::quick_sort_array(lis);
         let expected = vec![1, 2, 3, 4, 5];
         assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn test_quick_select() {
+        let mut lis: Vec<i32> = vec![3, 2, 1, 5, 6, 4];
+        let actual = Solution::find_kth_largest(lis, 2);
+        assert_eq!(actual, 5);
+
+        let mut lis: Vec<i32> = vec![-1, 2, 0];
+        let actual = Solution::find_kth_largest(lis, 3);
+        assert_eq!(actual, -1);
     }
 }
