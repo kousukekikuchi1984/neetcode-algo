@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 struct Solution {}
 
 impl Solution {
@@ -112,6 +114,20 @@ impl Solution {
         let end = nums.len() - 1;
         return quick_select(&mut nums, 0, end, k);
     }
+
+    pub fn sort_colors(nums: &mut Vec<i32>) {
+        let mut colors = vec![0; 3];
+        for num in nums.iter() {
+            colors[*num as usize] += 1;
+        }
+        let mut cur = 0;
+        for (color, &count) in colors.iter().enumerate() {
+            for _ in 0..count {
+                nums[cur] = color as i32;
+                cur += 1;
+            }
+        }
+    }
 }
 
 #[cfg(test)]
@@ -151,5 +167,12 @@ mod tests {
         let mut lis: Vec<i32> = vec![-1, 2, 0];
         let actual = Solution::find_kth_largest(lis, 3);
         assert_eq!(actual, -1);
+    }
+
+    #[test]
+    fn test_sort_colors() {
+        let mut lis: Vec<i32> = vec![2, 0, 2, 1, 1, 0];
+        Solution::sort_colors(&mut lis);
+        assert_eq!(lis, vec![0, 0, 1, 1, 2, 2]);
     }
 }
