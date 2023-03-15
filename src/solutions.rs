@@ -1,8 +1,9 @@
 mod doubly_linked_list;
 mod dynamic_arrays;
+mod fibonacci;
+mod queues;
+mod search;
 mod singly_linked_list;
+mod sort;
 mod stacks;
 mod static_arrays;
-mod queues;
-mod fibonacci;
-mod sort;
