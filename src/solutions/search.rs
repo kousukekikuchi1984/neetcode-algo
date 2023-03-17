@@ -57,6 +57,49 @@ impl Solution {
         let rows = &matrix[row as usize];
         _search_rows(&rows, 0, (rows.len() - 1) as isize, target)
     }
+
+    unsafe fn guessNumber(n: i32) -> i32 {
+        let mut start = 0;
+        let mut end = n;
+        while start <= end {
+            let middle = start + (end - start) / 2;
+            match guess(middle) {
+                -1 => {
+                    end = middle - 1;
+                }
+                0 => return middle,
+                1 => {
+                    start = middle + 1;
+                }
+                _ => panic!("unreachable"),
+            };
+        }
+        return -1;
+    }
+
+    pub fn first_bad_version(&self, n: i32) -> i32 {
+        let mut start = 0;
+        let mut end = n;
+        while start <= end {
+            let middle = start + (end - start) / 2;
+        }
+    }
+}
+
+fn guess(num: i32) -> i32 {
+    if num > 1150769282 {
+        return -1;
+    }
+
+    if num < 1150769282 {
+        return 1;
+    }
+
+    0
+}
+
+fn isBadVersion(version: i32) -> bool {
+    num >= 1150769282
 }
 
 #[cfg(test)]
@@ -76,5 +119,13 @@ mod tests {
         let matrix = vec![vec![1, 3, 5, 7], vec![10, 11, 16, 20], vec![23, 30, 34, 60]];
         let actual = Solution::search_matrix(matrix, 3);
         assert_eq!(actual, true);
+    }
+
+    #[test]
+    fn test_guess() {
+        unsafe {
+            let actual = Solution::guessNumber(1420736637);
+            assert_eq!(actual, 1150769282);
+        }
     }
 }
