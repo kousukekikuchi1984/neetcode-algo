@@ -2,6 +2,22 @@ use std::cmp::Ordering;
 
 struct Solution {}
 
+fn guess(num: i32) -> i32 {
+    if num > 1150769282 {
+        return -1;
+    }
+
+    if num < 1150769282 {
+        return 1;
+    }
+
+    0
+}
+
+fn isBadVersion(version: i32) -> bool {
+    version >= 1150769282
+}
+
 impl Solution {
     pub fn binary_search(nums: Vec<i32>, target: i32) -> i32 {
         fn _search(nums: &[i32], left: isize, right: isize, target: i32) -> isize {
@@ -77,29 +93,18 @@ impl Solution {
         return -1;
     }
 
-    pub fn first_bad_version(&self, n: i32) -> i32 {
-        let mut start = 0;
+    pub fn first_bad_version(n: i32) -> i32 {
+        let mut start = 1;
         let mut end = n;
-        while start <= end {
+        while start < end {
             let middle = start + (end - start) / 2;
+            match isBadVersion(middle) {
+                true => end = middle,
+                false => start = middle + 1,
+            };
         }
+        return start;
     }
-}
-
-fn guess(num: i32) -> i32 {
-    if num > 1150769282 {
-        return -1;
-    }
-
-    if num < 1150769282 {
-        return 1;
-    }
-
-    0
-}
-
-fn isBadVersion(version: i32) -> bool {
-    num >= 1150769282
 }
 
 #[cfg(test)]
@@ -127,5 +132,11 @@ mod tests {
             let actual = Solution::guessNumber(1420736637);
             assert_eq!(actual, 1150769282);
         }
+    }
+
+    #[test]
+    fn test_first_bad_version() {
+        let actual = Solution::first_bad_version(1420736637);
+        assert_eq!(actual, 1150769282);
     }
 }
