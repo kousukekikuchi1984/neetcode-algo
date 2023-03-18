@@ -107,42 +107,17 @@ impl Solution {
     }
 
     pub fn min_eating_speed(piles: Vec<i32>, h: i32) -> i32 {
-        // piles の最大値を用いて、binary search をする
-        // その時に規定時間いないであるかどうかを判断
-        fn will_be_in_time(piles: &[i32], time: i32) -> i32 {
-            let mut acc_time = 0;
-            for pile in piles {
-                acc_time += pile / time;
-                if pile % time > 0 {
-                    acc_time += 1;
-                }
-            }
-            return acc_time;
-        }
-
-        if piles.len() == 1 {
-            let mut count = 0;
-            count += piles[0] / h;
-            if piles[0] % h > 0 {
-                count += 1;
-            }
-            return count;
-        }
-
-        let mut left = 1;
-        let mut right = *piles.iter().max().unwrap();
-        let mut middle = -1;
-        while left <= right {
-            middle = left + (right - left) / 2;
-            let time_spent = will_be_in_time(&piles, middle);
-            println!("time_spent: {}, time: {}", time_spent, middle);
-            match time_spent.cmp(&h) {
-                Ordering::Less => right = middle - 1,
-                Ordering::Equal => return middle,
-                Ordering::Greater => left = middle + 1,
+        let (mut left, mut right) = (1, *piles.iter().max().unwrap());
+        while left < right {
+            let mid = left + (right - left) / 2;
+            let time = piles.iter().map(|&p| (p + mid - 1) / mid).sum::<i32>();
+            if time <= h {
+                right = mid;
+            } else {
+                left = mid + 1;
             }
         }
-        return middle;
+        return left;
     }
 }
 
