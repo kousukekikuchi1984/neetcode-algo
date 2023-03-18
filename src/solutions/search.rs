@@ -105,6 +105,45 @@ impl Solution {
         }
         return start;
     }
+
+    pub fn min_eating_speed(piles: Vec<i32>, h: i32) -> i32 {
+        // piles の最大値を用いて、binary search をする
+        // その時に規定時間いないであるかどうかを判断
+        fn will_be_in_time(piles: &[i32], time: i32) -> i32 {
+            let mut acc_time = 0;
+            for pile in piles {
+                acc_time += pile / time;
+                if pile % time > 0 {
+                    acc_time += 1;
+                }
+            }
+            return acc_time;
+        }
+
+        if piles.len() == 1 {
+            let mut count = 0;
+            count += piles[0] / h;
+            if piles[0] % h > 0 {
+                count += 1;
+            }
+            return count;
+        }
+
+        let mut left = 1;
+        let mut right = *piles.iter().max().unwrap();
+        let mut middle = -1;
+        while left <= right {
+            middle = left + (right - left) / 2;
+            let time_spent = will_be_in_time(&piles, middle);
+            println!("time_spent: {}, time: {}", time_spent, middle);
+            match time_spent.cmp(&h) {
+                Ordering::Less => right = middle - 1,
+                Ordering::Equal => return middle,
+                Ordering::Greater => left = middle + 1,
+            }
+        }
+        return middle;
+    }
 }
 
 #[cfg(test)]
@@ -138,5 +177,13 @@ mod tests {
     fn test_first_bad_version() {
         let actual = Solution::first_bad_version(1420736637);
         assert_eq!(actual, 1150769282);
+    }
+
+    #[test]
+    fn test_min_eating_time() {
+        let actual = Solution::min_eating_speed(vec![30, 11, 23, 4, 20], 5);
+        assert_eq!(actual, 30);
+        let actual = Solution::min_eating_speed(vec![312884470], 312884469);
+        assert_eq!(actual, 2);
     }
 }
