@@ -1,4 +1,6 @@
+use std::cell::RefCell;
 use std::cmp::Ordering;
+use std::rc::Rc;
 
 struct Solution {}
 
@@ -16,6 +18,24 @@ fn guess(num: i32) -> i32 {
 
 fn isBadVersion(version: i32) -> bool {
     version >= 1150769282
+}
+
+#[derive(Debug, PartialEq, Eq)]
+pub struct TreeNode {
+    pub val: i32,
+    pub left: Option<Rc<RefCell<TreeNode>>>,
+    pub right: Option<Rc<RefCell<TreeNode>>>,
+}
+
+impl TreeNode {
+    #[inline]
+    pub fn new(val: i32) -> Self {
+        TreeNode {
+            val,
+            left: None,
+            right: None,
+        }
+    }
 }
 
 impl Solution {
@@ -118,6 +138,25 @@ impl Solution {
             }
         }
         return left;
+    }
+
+    pub fn search_bst(
+        mut root: Option<Rc<RefCell<TreeNode>>>,
+        val: i32,
+    ) -> Option<Rc<RefCell<TreeNode>>> {
+        let mut node = root;
+        while let Some(n) = node {
+            let cmp = n.borrow().val.cmp(&val);
+            if cmp == Ordering::Equal {
+                return Some(n);
+            }
+            node = match cmp {
+                Ordering::Greater => n.borrow().left.clone(),
+                Ordering::Less => n.borrow().right.clone(),
+                _ => unreachable!(),
+            };
+        }
+        None
     }
 }
 
