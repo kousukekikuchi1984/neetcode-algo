@@ -158,6 +158,25 @@ impl Solution {
         }
         None
     }
+
+    pub fn insert_into_bst(
+        root: Option<Rc<RefCell<TreeNode>>>,
+        val: i32,
+    ) -> Option<Rc<RefCell<TreeNode>>> {
+        Some(match root {
+            None => Rc::new(RefCell::new(TreeNode::new(val))),
+            Some(cur) => {
+                if cur.borrow().val > val {
+                    let node = Solution::insert_into_bst(cur.borrow().left.clone(), val);
+                    cur.borrow_mut().left = node;
+                } else {
+                    let node = Solution::insert_into_bst(cur.borrow().right.clone(), val);
+                    cur.borrow_mut().right = node;
+                }
+                cur
+            }
+        })
+    }
 }
 
 #[cfg(test)]
