@@ -177,6 +177,33 @@ impl Solution {
             }
         })
     }
+
+    pub fn delete_node(
+        root: Option<Rc<RefCell<TreeNode>>>,
+        key: i32,
+    ) -> Option<Rc<RefCell<TreeNode>>> {
+        fn min_value_node(root: Rc<RefCell<TreeNode>>) -> Option<Rc<RefCell<TreeNode>>> {
+            let mut cur = root.clone()?;
+            while cur.borrow().left.is_some() {
+                cur = cur.borrow().left.clone();
+            }
+            Some(cur)
+        }
+
+        match root {
+            None => return None,
+            Some(cur) => match cur.borrow().val.cmp(&key) {
+                Ordering::Less => cur.borrow().right = Solution::delete_node(Some(cur), key),
+                Ordering::Equal => {
+                    let min_node = min_value_node(cur).unwrap();
+                    cur.borrow_mut().val = min_node.borrow().val;
+                    cur.borrow_mut().right = Solution::delete_node(cur.borrow().right, key);
+                }
+                Ordering::Greater => cur.borrow_mut().left = Solution::delete_node(Some(cur), key),
+            },
+        };
+        root
+    }
 }
 
 #[cfg(test)]
