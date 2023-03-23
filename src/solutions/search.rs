@@ -1,4 +1,4 @@
-use std::cell::RefCell;
+use std::cell::{Ref, RefCell};
 use std::cmp::Ordering;
 use std::rc::Rc;
 
@@ -246,11 +246,16 @@ impl Solution {
         _inorder_traversal(root, &mut results);
         results
     }
+
+    pub fn kth_smallest(root: Option<Rc<RefCell<TreeNode>>>, mut k: i32) -> i32 {}
 }
 
 #[cfg(test)]
 mod tests {
     use super::Solution;
+    use super::TreeNode;
+    use std::cell::RefCell;
+    use std::rc::Rc;
 
     #[test]
     fn test_binary_search() {
@@ -287,5 +292,21 @@ mod tests {
         assert_eq!(actual, 30);
         let actual = Solution::min_eating_speed(vec![312884470], 312884469);
         assert_eq!(actual, 2);
+    }
+
+    #[test]
+    fn test_kth_smallest() {
+        let actual = Solution::kth_smallest(None, 1);
+        assert_eq!(actual, 0);
+        let root = Some(Rc::new(RefCell::new(TreeNode::new(3))));
+        let actual = Solution::kth_smallest(root, 1);
+        assert_eq!(actual, 3);
+        let root = Some(Rc::new(RefCell::new(TreeNode::new(5))));
+        if let Some(node) = &root {
+           node.borrow_mut().right = Some(Rc::new(RefCell::new(TreeNode::new(6))));
+           node.borrow_mut().left = Some(Rc::new(RefCell::new(TreeNode::new(3))));
+        }
+        let actual = Solution::kth_smallest(root.clone(), 3);
+        assert_eq!(actual, 6);
     }
 }
