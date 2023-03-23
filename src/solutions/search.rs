@@ -247,7 +247,29 @@ impl Solution {
         results
     }
 
-    pub fn kth_smallest(root: Option<Rc<RefCell<TreeNode>>>, mut k: i32) -> i32 {}
+    pub fn kth_smallest(root: Option<Rc<RefCell<TreeNode>>>, mut k: i32) -> i32 {
+        fn _kth_smallest(root: Option<Rc<RefCell<TreeNode>>>, k: &mut i32) -> i32 {
+            // use inorder traversal
+            if let Some(cur) = root {
+                let left = _kth_smallest(cur.borrow().left.clone(), k);
+                if *k == 0 {
+                    return left;
+                }
+                *k -= 1;
+                if *k == 0 {
+                    return cur.borrow().val;
+                }
+                let right = _kth_smallest(cur.borrow().right.clone(), k);
+                if *k == 0 {
+                    return right;
+                }
+            }
+            0
+
+        }
+
+        _kth_smallest(root, &mut k)
+    }
 }
 
 #[cfg(test)]
