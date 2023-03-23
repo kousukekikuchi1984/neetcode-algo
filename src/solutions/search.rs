@@ -230,6 +230,22 @@ impl Solution {
 
         _delete_node(&root, key)
     }
+
+    pub fn inorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
+        fn _inorder_traversal(root: Option<Rc<RefCell<TreeNode>>>, results: &mut Vec<i32>) {
+            match root {
+                None => {}
+                Some(cur) => {
+                    _inorder_traversal(cur.borrow().left.clone(), results);
+                    results.push(cur.borrow().val);
+                    _inorder_traversal(cur.borrow().right.clone(), results);
+                }
+            }
+        }
+        let mut results: Vec<i32> = vec![];
+        _inorder_traversal(root, &mut results);
+        results
+    }
 }
 
 #[cfg(test)]
