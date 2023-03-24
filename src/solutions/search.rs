@@ -358,6 +358,23 @@ impl Solution {
 
         results
     }
+
+    pub fn has_path_sum(root: Option<Rc<RefCell<TreeNode>>>, target_sum: i32) -> bool {
+        fn _has_path_sum(root: Option<Rc<RefCell<TreeNode>>>, target_sum: i32, sum: i32) -> bool {
+            return match root {
+                None => false,
+                Some(cur) => {
+                    let sum = sum + cur.borrow().val;
+                    if cur.borrow().left.is_none() && cur.borrow().right.is_none() {
+                        return sum == target_sum;
+                    }
+                    _has_path_sum(cur.borrow().left.clone(), target_sum, sum) || _has_path_sum(cur.borrow().right.clone(), target_sum, sum)
+                }
+            }
+        }
+
+        _has_path_sum(root, target_sum, 0)
+    }
 }
 
 #[cfg(test)]
@@ -453,4 +470,14 @@ mod tests {
         assert_eq!(actual, vec![1, 3]);
     }
 
+    #[test]
+    fn test_has_path_sum() {
+        let root = Some(Rc::new(RefCell::new(TreeNode::new(5))));
+        if let Some(node) = &root {
+           node.borrow_mut().right = Some(Rc::new(RefCell::new(TreeNode::new(8))));
+           node.borrow_mut().left = Some(Rc::new(RefCell::new(TreeNode::new(4))));
+        }
+        let actual = Solution::has_path_sum(root, 9);
+        assert_eq!(actual, true);
+    }
 }
