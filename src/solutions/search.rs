@@ -327,6 +327,37 @@ impl Solution {
 
         results
     }
+
+    pub fn right_side_view(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
+        let mut results: Vec<i32> = vec![];
+        let mut queue: Vec<Rc<RefCell<TreeNode>>> = vec![];
+        if root.is_some() {
+            queue.push(root.clone().unwrap());
+            results.push(root.clone().unwrap().borrow().val);
+        }
+        while !queue.is_empty() {
+            let mut next_level: Vec<Rc<RefCell<TreeNode>>> = vec![];
+            for node in queue {
+                if let n = node {
+                    let left  = n.borrow().left.clone();
+                    if let Some(l) = left {
+                        next_level.push(l);
+                    }
+                    let right = n.borrow().right.clone();
+                    if let Some(r) = n.borrow().right.clone() {
+                        next_level.push(r);
+                    }
+                }
+            }
+            let len = next_level.len();
+            if len > 0 {
+                results.push(next_level[len - 1].borrow().val);
+            }
+            queue = next_level;
+        }
+
+        results
+    }
 }
 
 #[cfg(test)]
@@ -409,6 +440,17 @@ mod tests {
         }
         let actual = Solution::level_order_bfs(root);
         assert_eq!(actual, vec![vec![3], vec![9, 20]]);
+    }
+
+    #[test]
+    fn test_right_side_view() {
+        let root = Some(Rc::new(RefCell::new(TreeNode::new(1))));
+        if let Some(node) = &root {
+           node.borrow_mut().right = Some(Rc::new(RefCell::new(TreeNode::new(3))));
+           node.borrow_mut().left = Some(Rc::new(RefCell::new(TreeNode::new(2))));
+        }
+        let actual = Solution::right_side_view(root);
+        assert_eq!(actual, vec![1, 3]);
     }
 
 }
