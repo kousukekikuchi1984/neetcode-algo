@@ -1,5 +1,6 @@
-use std::cell::{Ref, RefCell};
+use std::cell::RefCell;
 use std::cmp::Ordering;
+use std::collections::VecDeque;
 use std::rc::Rc;
 
 struct Solution {}
@@ -265,7 +266,6 @@ impl Solution {
                 }
             }
             0
-
         }
 
         _kth_smallest(root, &mut k)
@@ -300,10 +300,34 @@ impl Solution {
             }
         }
 
-       let mut results: Vec<Vec<i32>> = vec![];
+        let mut results: Vec<Vec<i32>> = vec![];
         _level_order(root, 0, &mut results);
         return results;
     }
+
+    pub fn level_order_bfs(mut root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<i32>> {
+        let mut results: Vec<Vec<i32>> = vec![];
+        let mut queue: Vec<Option<Rc<RefCell<TreeNode>>>> = vec![];
+        queue.push(root.clone());
+        while !queue.is_empty() {
+            let mut level = vec![];
+            let mut next_level = vec![];
+            for node in queue {
+                if let Some(n) = node {
+                    level.push(n.borrow().val);
+                    next_level.push(n.borrow().left.clone());
+                    next_level.push(n.borrow().right.clone());
+                }
+            }
+            if !level.is_empty() {
+                results.push(level);
+            }
+            queue = next_level;
+        }
+
+        results
+    }
+}
 
 #[cfg(test)]
 mod tests {
@@ -375,4 +399,16 @@ mod tests {
         let actual = Solution::level_order(root);
         assert_eq!(actual, vec![vec![3], vec![9, 20]]);
     }
+
+    #[test]
+    fn test_level_order_bfs() {
+        let root = Some(Rc::new(RefCell::new(TreeNode::new(3))));
+        if let Some(node) = &root {
+           node.borrow_mut().right = Some(Rc::new(RefCell::new(TreeNode::new(20))));
+           node.borrow_mut().left = Some(Rc::new(RefCell::new(TreeNode::new(9))));
+        }
+        let actual = Solution::level_order_bfs(root);
+        assert_eq!(actual, vec![vec![3], vec![9, 20]]);
+    }
+
 }
