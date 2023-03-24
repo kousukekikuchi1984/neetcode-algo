@@ -286,8 +286,24 @@ impl Solution {
         _build_tree(&preorder, &inorder)
     }
     pub fn level_order(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<i32>> {
+        fn _level_order(root: Option<Rc<RefCell<TreeNode>>>, mut level: usize, results: &mut Vec<Vec<i32>>) {
+            match root {
+                None => {},
+                Some(cur) => {
+                    if level >= results.len() {
+                        results.push(vec![]);
+                    }
+                    results[level].push(cur.borrow().val);
+                    _level_order(cur.borrow().left.clone(), level + 1, results);
+                    _level_order(cur.borrow().right.clone(), level + 1, results);
+                }
+            }
+        }
+
+       let mut results: Vec<Vec<i32>> = vec![];
+        _level_order(root, 0, &mut results);
+        return results;
     }
-}
 
 #[cfg(test)]
 mod tests {
