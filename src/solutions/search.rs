@@ -270,6 +270,21 @@ impl Solution {
 
         _kth_smallest(root, &mut k)
     }
+
+    pub fn build_tree(preorder: Vec<i32>, inorder: Vec<i32>) -> Option<Rc<RefCell<TreeNode>>> {
+        fn _build_tree(preorder: &[i32], inorder: &[i32]) -> Option<Rc<RefCell<TreeNode>>> {
+            if preorder.is_empty() || inorder.is_empty() {
+                return None;
+            }
+            let root = Rc::new(RefCell::new(TreeNode::new(preorder[0])));
+            let mid = inorder.iter().position(|&x| x == preorder[0]).unwrap();
+            root.borrow_mut().left = _build_tree(&preorder[1..mid + 1], &inorder[..mid]);
+            root.borrow_mut().right = _build_tree(&preorder[mid + 1..], &inorder[mid + 1..]);
+            Some(root)
+        }
+
+        _build_tree(&preorder, &inorder)
+    }
 }
 
 #[cfg(test)]
