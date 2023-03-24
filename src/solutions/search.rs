@@ -285,6 +285,8 @@ impl Solution {
 
         _build_tree(&preorder, &inorder)
     }
+    pub fn level_order(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<i32>> {
+    }
 }
 
 #[cfg(test)]
@@ -345,5 +347,16 @@ mod tests {
         }
         let actual = Solution::kth_smallest(root.clone(), 3);
         assert_eq!(actual, 6);
+    }
+
+    #[test]
+    fn test_level_order() {
+        let root = Some(Rc::new(RefCell::new(TreeNode::new(3))));
+        if let Some(node) = &root {
+           node.borrow_mut().right = Some(Rc::new(RefCell::new(TreeNode::new(20))));
+           node.borrow_mut().left = Some(Rc::new(RefCell::new(TreeNode::new(9))));
+        }
+        let actual = Solution::level_order(root);
+        assert_eq!(actual, vec![vec![3], vec![9, 20]]);
     }
 }
