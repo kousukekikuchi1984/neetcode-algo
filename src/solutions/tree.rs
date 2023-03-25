@@ -35,6 +35,34 @@ impl Solution {
         dfs(&nums, 0, &mut results, &mut subset);
         results
     }
+
+    pub fn combination_sum(mut candidates: Vec<i32>, target: i32) -> Vec<Vec<i32>> {
+        fn dfs(
+            candidates: &mut Vec<i32>,
+            index: usize,
+            target: i32,
+            results: &mut Vec<Vec<i32>>,
+            subset: &mut Vec<i32>,
+        ) {
+            if target == 0 {
+                results.push(subset.to_vec());
+                return;
+            }
+            if target < 0 {
+                return;
+            }
+            // we can use a candidate multiple times
+            for i in index..candidates.len() {
+                subset.push(candidates[i]);
+                dfs(candidates, i, target - candidates[i], results, subset);
+                subset.pop();
+            }
+        }
+
+        let mut results: Vec<Vec<i32>> = vec![];
+        dfs(&mut candidates, 0, target, &mut results, &mut vec![]);
+        return results;
+    }
 }
 
 #[cfg(test)]
@@ -56,5 +84,16 @@ mod tests {
             vec![1, 2, 3],
         ];
         assert_eq!(actual, expected);
+    }
+
+    fn test_combination_sub() {
+        let nums = vec![2, 3, 6, 7];
+        let actual = Solution::combination_sum(nums, 7);
+        let expected = vec![vec![2, 2, 3], vec![7]];
+        assert_eq!(actual, expected);
+
+        let nums = vec![2, 3, 6, 7];
+        let actual = Solution::combination_sum(nums, 8);
+        assert_eq!(actual, vec![vec![2, 2, 2, 2], vec![2, 3, 3], vec![3, 5]]);
     }
 }
