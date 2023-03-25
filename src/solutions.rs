@@ -7,3 +7,4 @@ mod singly_linked_list;
 mod sort;
 mod stacks;
 mod static_arrays;
+mod tree;

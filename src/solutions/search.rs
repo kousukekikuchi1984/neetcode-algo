@@ -1,6 +1,5 @@
 use std::cell::RefCell;
 use std::cmp::Ordering;
-use std::collections::VecDeque;
 use std::rc::Rc;
 
 struct Solution {}
@@ -286,9 +285,13 @@ impl Solution {
         _build_tree(&preorder, &inorder)
     }
     pub fn level_order(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<i32>> {
-        fn _level_order(root: Option<Rc<RefCell<TreeNode>>>, mut level: usize, results: &mut Vec<Vec<i32>>) {
+        fn _level_order(
+            root: Option<Rc<RefCell<TreeNode>>>,
+            mut level: usize,
+            results: &mut Vec<Vec<i32>>,
+        ) {
             match root {
-                None => {},
+                None => {}
                 Some(cur) => {
                     if level >= results.len() {
                         results.push(vec![]);
@@ -339,7 +342,7 @@ impl Solution {
             let mut next_level: Vec<Rc<RefCell<TreeNode>>> = vec![];
             for node in queue {
                 if let n = node {
-                    let left  = n.borrow().left.clone();
+                    let left = n.borrow().left.clone();
                     if let Some(l) = left {
                         next_level.push(l);
                     }
@@ -368,9 +371,10 @@ impl Solution {
                     if cur.borrow().left.is_none() && cur.borrow().right.is_none() {
                         return sum == target_sum;
                     }
-                    _has_path_sum(cur.borrow().left.clone(), target_sum, sum) || _has_path_sum(cur.borrow().right.clone(), target_sum, sum)
+                    _has_path_sum(cur.borrow().left.clone(), target_sum, sum)
+                        || _has_path_sum(cur.borrow().right.clone(), target_sum, sum)
                 }
-            }
+            };
         }
 
         _has_path_sum(root, target_sum, 0)
@@ -430,8 +434,8 @@ mod tests {
         assert_eq!(actual, 3);
         let root = Some(Rc::new(RefCell::new(TreeNode::new(5))));
         if let Some(node) = &root {
-           node.borrow_mut().right = Some(Rc::new(RefCell::new(TreeNode::new(6))));
-           node.borrow_mut().left = Some(Rc::new(RefCell::new(TreeNode::new(3))));
+            node.borrow_mut().right = Some(Rc::new(RefCell::new(TreeNode::new(6))));
+            node.borrow_mut().left = Some(Rc::new(RefCell::new(TreeNode::new(3))));
         }
         let actual = Solution::kth_smallest(root.clone(), 3);
         assert_eq!(actual, 6);
@@ -441,8 +445,8 @@ mod tests {
     fn test_level_order() {
         let root = Some(Rc::new(RefCell::new(TreeNode::new(3))));
         if let Some(node) = &root {
-           node.borrow_mut().right = Some(Rc::new(RefCell::new(TreeNode::new(20))));
-           node.borrow_mut().left = Some(Rc::new(RefCell::new(TreeNode::new(9))));
+            node.borrow_mut().right = Some(Rc::new(RefCell::new(TreeNode::new(20))));
+            node.borrow_mut().left = Some(Rc::new(RefCell::new(TreeNode::new(9))));
         }
         let actual = Solution::level_order(root);
         assert_eq!(actual, vec![vec![3], vec![9, 20]]);
@@ -452,8 +456,8 @@ mod tests {
     fn test_level_order_bfs() {
         let root = Some(Rc::new(RefCell::new(TreeNode::new(3))));
         if let Some(node) = &root {
-           node.borrow_mut().right = Some(Rc::new(RefCell::new(TreeNode::new(20))));
-           node.borrow_mut().left = Some(Rc::new(RefCell::new(TreeNode::new(9))));
+            node.borrow_mut().right = Some(Rc::new(RefCell::new(TreeNode::new(20))));
+            node.borrow_mut().left = Some(Rc::new(RefCell::new(TreeNode::new(9))));
         }
         let actual = Solution::level_order_bfs(root);
         assert_eq!(actual, vec![vec![3], vec![9, 20]]);
@@ -463,8 +467,8 @@ mod tests {
     fn test_right_side_view() {
         let root = Some(Rc::new(RefCell::new(TreeNode::new(1))));
         if let Some(node) = &root {
-           node.borrow_mut().right = Some(Rc::new(RefCell::new(TreeNode::new(3))));
-           node.borrow_mut().left = Some(Rc::new(RefCell::new(TreeNode::new(2))));
+            node.borrow_mut().right = Some(Rc::new(RefCell::new(TreeNode::new(3))));
+            node.borrow_mut().left = Some(Rc::new(RefCell::new(TreeNode::new(2))));
         }
         let actual = Solution::right_side_view(root);
         assert_eq!(actual, vec![1, 3]);
@@ -474,8 +478,8 @@ mod tests {
     fn test_has_path_sum() {
         let root = Some(Rc::new(RefCell::new(TreeNode::new(5))));
         if let Some(node) = &root {
-           node.borrow_mut().right = Some(Rc::new(RefCell::new(TreeNode::new(8))));
-           node.borrow_mut().left = Some(Rc::new(RefCell::new(TreeNode::new(4))));
+            node.borrow_mut().right = Some(Rc::new(RefCell::new(TreeNode::new(8))));
+            node.borrow_mut().left = Some(Rc::new(RefCell::new(TreeNode::new(4))));
         }
         let actual = Solution::has_path_sum(root, 9);
         assert_eq!(actual, true);
