@@ -1,3 +1,5 @@
+use std::collections::BinaryHeap;
+
 struct Solution {}
 
 impl Solution {
@@ -67,13 +69,32 @@ impl Solution {
 
 struct KthLargest {
     nums: Vec<i32>,
-    k: i32,
+    k: usize,
 }
 
 impl KthLargest {
+    fn new(k: i32, nums: Vec<i32>) -> Self {
+        KthLargest {
+            nums,
+            k: k as usize,
+        }
+    }
+
+    fn add(&mut self, val: i32) -> i32 {
+        self.nums.push(val);
+        self.nums.sort();
+        self.nums[self.nums.len() - self.k as usize]
+    }
+}
+struct KthLargestHeap {
+    heap: BinaryHeap<i32>,
+    k: usize,
+}
+
+impl KthLargestHeap {
     fn new(k: i32, nums: Vec<i32>) -> Self {}
 
-    fn add(&self, val: i32) -> i32 {}
+    fn add(&mut self, val: i32) -> i32 {}
 }
 
 #[cfg(test)]
@@ -109,7 +130,16 @@ mod tests {
     }
 
     fn test_kth_largest() {
-        let kth_largest = KthLargest::new(3, vec![4, 5, 8, 2]);
+        let mut kth_largest = KthLargest::new(3, vec![4, 5, 8, 2]);
+        assert_eq!(kth_largest.add(3), 4);
+        assert_eq!(kth_largest.add(5), 5);
+        assert_eq!(kth_largest.add(10), 5);
+        assert_eq!(kth_largest.add(9), 8);
+        assert_eq!(kth_largest.add(4), 8);
+    }
+
+    fn test_kth_largest_heap() {
+        let mut kth_largest = KthLargestHeap::new(3, vec![4, 5, 8, 2]);
         assert_eq!(kth_largest.add(3), 4);
         assert_eq!(kth_largest.add(5), 5);
         assert_eq!(kth_largest.add(10), 5);
