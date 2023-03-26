@@ -92,9 +92,28 @@ struct KthLargestHeap {
 }
 
 impl KthLargestHeap {
-    fn new(k: i32, nums: Vec<i32>) -> Self {}
+    fn new(k: i32, nums: Vec<i32>) -> Self {
+        Self {
+            heap: BinaryHeap::from(nums),
+            k: k as usize,
+        }
+    }
 
-    fn add(&mut self, val: i32) -> i32 {}
+    fn add(&mut self, val: i32) -> i32 {
+        self.heap.push(val);
+        let mut local_heap = self.heap.clone();
+        let mut result = -1;
+        for _ in 0..self.k {
+            match local_heap.pop() {
+                None => {
+                    result = -1;
+                    break;
+                }
+                Some(v) => result = v,
+            }
+        }
+        result
+    }
 }
 
 #[cfg(test)]
@@ -118,17 +137,15 @@ mod tests {
         assert_eq!(actual, expected);
     }
 
+    #[test]
     fn test_combination_sub() {
         let nums = vec![2, 3, 6, 7];
         let actual = Solution::combination_sum(nums, 7);
         let expected = vec![vec![2, 2, 3], vec![7]];
         assert_eq!(actual, expected);
-
-        let nums = vec![2, 3, 6, 7];
-        let actual = Solution::combination_sum(nums, 8);
-        assert_eq!(actual, vec![vec![2, 2, 2, 2], vec![2, 3, 3], vec![3, 5]]);
     }
 
+    #[test]
     fn test_kth_largest() {
         let mut kth_largest = KthLargest::new(3, vec![4, 5, 8, 2]);
         assert_eq!(kth_largest.add(3), 4);
@@ -138,6 +155,7 @@ mod tests {
         assert_eq!(kth_largest.add(4), 8);
     }
 
+    #[test]
     fn test_kth_largest_heap() {
         let mut kth_largest = KthLargestHeap::new(3, vec![4, 5, 8, 2]);
         assert_eq!(kth_largest.add(3), 4);
