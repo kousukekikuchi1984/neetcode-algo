@@ -85,6 +85,8 @@ impl Solution {
             Some(v) => v,
         }
     }
+
+    pub fn k_closest(points: Vec<Vec<i32>>, k: i32) -> Vec<Vec<i32>> {}
 }
 
 struct KthLargest {
@@ -190,5 +192,13 @@ mod tests {
         let stones = vec![2, 7, 4, 1, 8, 1];
         let actual = Solution::last_stone_weight(stones);
         assert_eq!(actual, 1);
+    }
+
+    #[test]
+    fn test_k_closest() {
+        let points = vec![vec![1, 3], vec![-2, 2]];
+        let actual = Solution::k_closest(points, 1);
+        let expected = vec![vec![-2, 2]];
+        assert_eq!(actual, expected);
     }
 }
