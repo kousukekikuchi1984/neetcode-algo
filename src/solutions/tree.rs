@@ -65,6 +65,8 @@ impl Solution {
         dfs(&mut candidates, 0, target, &mut results, &mut vec![]);
         return results;
     }
+
+    pub fn last_stone_weight(stones: Vec<i32>) -> i32 {}
 }
 
 struct KthLargest {
@@ -163,5 +165,12 @@ mod tests {
         assert_eq!(kth_largest.add(10), 5);
         assert_eq!(kth_largest.add(9), 8);
         assert_eq!(kth_largest.add(4), 8);
+    }
+
+    #[test]
+    fn test_last_stone_weight() {
+        let stones = vec![2, 7, 4, 1, 8, 1];
+        let actual = Solution::last_stone_weight(stones);
+        assert_eq!(actual, 1);
     }
 }
