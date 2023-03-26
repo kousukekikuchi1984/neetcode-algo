@@ -28,6 +28,19 @@ impl Solution {
     }
 }
 
+struct LRUCache {
+    capacity: i32,
+    map: HashMap<i32, i32>,
+}
+
+impl LRUCache {
+    fn new(capacity: i32) -> Self {}
+
+    fn get(&self, key: i32) -> i32 {}
+
+    fn put(&self, key: i32, value: i32) {}
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
