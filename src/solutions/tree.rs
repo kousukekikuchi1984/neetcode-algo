@@ -66,7 +66,25 @@ impl Solution {
         return results;
     }
 
-    pub fn last_stone_weight(stones: Vec<i32>) -> i32 {}
+    pub fn last_stone_weight(stones: Vec<i32>) -> i32 {
+        let mut heap = BinaryHeap::from(stones);
+        // heap must contain at least 2 stones
+        while heap.len() > 1 {
+            // get two stones from heap
+            let x = heap.pop().unwrap();
+            let y = heap.pop().unwrap();
+            match x - y {
+                // if they are equal, delete then = do nothing
+                0 => {}
+                // if they are not equal, the difference should be back to the queue
+                diff => heap.push(diff.abs()),
+            }
+        }
+        match heap.pop() {
+            None => 0,
+            Some(v) => v,
+        }
+    }
 }
 
 struct KthLargest {
