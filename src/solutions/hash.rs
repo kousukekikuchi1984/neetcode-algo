@@ -1,7 +1,17 @@
+use std::collections::HashSet;
+
 struct Solution {}
 
 impl Solution {
-    pub fn contains_duplicate(nums: Vec<i32>) -> bool {}
+    pub fn contains_duplicate(nums: Vec<i32>) -> bool {
+        let mut set = HashSet::new();
+        for num in nums.iter() {
+            if !set.insert(num) {
+                return true;
+            }
+        }
+        false
+    }
 }
 
 #[cfg(test)]
