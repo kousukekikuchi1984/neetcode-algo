@@ -102,6 +102,19 @@ impl Solution {
             .map(|(_, point)| point)
             .collect()
     }
+
+    pub fn find_kth_largest(mut nums: Vec<i32>, k: i32) -> i32 {
+        let mut heap = BinaryHeap::from(nums);
+        let mut result = -1;
+        let mut k = k - 1;
+        while let Some(val) = heap.pop() {
+            if k == 0 {
+                result = val;
+            }
+            k -= 1;
+        }
+        result
+    }
 }
 
 struct KthLargest {
@@ -215,5 +228,12 @@ mod tests {
         let actual = Solution::k_closest(points, 1);
         let expected = vec![vec![-2, 2]];
         assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn test_find_kth_largest() {
+        let nums = vec![3, 2, 1, 5, 6, 4];
+        let actual = Solution::find_kth_largest(nums, 2);
+        assert_eq!(actual, 5);
     }
 }
