@@ -66,6 +66,22 @@ impl LRUCache {
     }
 }
 
+struct MyHashSet {}
+
+/**
+ * `&self` means the method takes an immutable reference.
+ * If you need a mutable reference, change it to `&mut self` instead.
+ */
+impl MyHashSet {
+    fn new() -> Self {}
+
+    fn add(&self, key: i32) {}
+
+    fn remove(&self, key: i32) {}
+
+    fn contains(&self, key: i32) -> bool {}
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -88,5 +104,18 @@ mod tests {
         cache.put(2, 6);
         assert_eq!(cache.get(1), -1);
         assert_eq!(cache.get(2), 6);
+    }
+
+    #[test]
+    fn test_my_hash_set() {
+        let hash_set = MyHashSet::new();
+        hash_set.add(1);
+        hash_set.add(2);
+        assert_eq!(hash_set.contains(1), true);
+        assert_eq!(hash_set.contains(3), false);
+        hash_set.add(2);
+        assert_eq!(hash_set.contains(2), true);
+        hash_set.remove(2);
+        assert_eq!(hash_set.contains(2), false);
     }
 }
