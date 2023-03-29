@@ -1,3 +1,4 @@
+use std::borrow::Borrow;
 use std::collections::HashSet;
 use std::collections::{HashMap, VecDeque};
 
@@ -66,20 +67,48 @@ impl LRUCache {
     }
 }
 
-struct MyHashSet {}
+struct MyHashSet {
+    data: Vec<Vec<i32>>, // 997 because 10^6 ~= 997^2
+}
 
-/**
- * `&self` means the method takes an immutable reference.
- * If you need a mutable reference, change it to `&mut self` instead.
- */
 impl MyHashSet {
-    fn new() -> Self {}
+    fn new() -> Self {
+        let mut table: Vec<Vec<i32>> = vec![];
+        for _ in 0..997 {
+            let row: Vec<i32> = vec![];
+            table.push(row);
+        }
+        MyHashSet { data: table }
+    }
 
-    fn add(&self, key: i32) {}
+    fn add(&mut self, key: i32) {
+        let h = self.hash(key) as usize;
+        for val in &self.data[h] {
+            if val == &key {
+                return;
+            }
+        }
+        self.data[h].push(key);
+    }
 
-    fn remove(&self, key: i32) {}
+    fn remove(&mut self, key: i32) {
+        let h = self.hash(key) as usize;
+        let i = self.data[h].iter().position(|&x| x == key);
+        if i != None {
+            self.data[h].remove(i.unwrap());
+        }
+    }
 
-    fn contains(&self, key: i32) -> bool {}
+    fn contains(&self, key: i32) -> bool {
+        let h = self.hash(key) as usize;
+        let i = self.data[h].iter().position(|&x| x == key);
+        i != None
+    }
+
+    // calculate the entry
+    fn hash(&self, key: i32) -> i32 {
+        key % 997
+    }
 }
 
 #[cfg(test)]
@@ -108,7 +137,7 @@ mod tests {
 
     #[test]
     fn test_my_hash_set() {
-        let hash_set = MyHashSet::new();
+        let mut hash_set = MyHashSet::new();
         hash_set.add(1);
         hash_set.add(2);
         assert_eq!(hash_set.contains(1), true);
