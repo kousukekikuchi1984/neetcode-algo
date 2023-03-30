@@ -1,6 +1,7 @@
 mod doubly_linked_list;
 mod dynamic_arrays;
 mod fibonacci;
+mod graph;
 mod hash;
 mod queues;
 mod search;
