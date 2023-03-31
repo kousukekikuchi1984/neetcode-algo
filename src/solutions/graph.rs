@@ -46,6 +46,8 @@ impl Solution {
         }
         islands
     }
+
+    pub fn max_area_of_island(grid: Vec<Vec<i32>>) -> i32 {}
 }
 
 #[cfg(test)]
@@ -62,6 +64,23 @@ mod tests {
         ];
         let actual = Solution::num_islands(grid);
         let expected = 3;
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn test_max_area_of_island() {
+        let grid: Vec<Vec<i32>> = vec![
+            vec![0,0,1,0,0,0,0,1,0,0,0,0,0],
+            vec![0,0,0,0,0,0,0,1,1,1,0,0,0],
+            vec![0,1,1,0,1,0,0,0,0,0,0,0,0],
+            vec![0,1,0,0,1,1,0,0,1,0,1,0,0],
+            vec![0,1,0,0,1,1,0,0,1,1,1,0,0],
+            vec![0,0,0,0,0,0,0,0,0,0,1,0,0],
+            vec![0,0,0,0,0,0,0,1,1,1,0,0,0],
+            vec![0,0,0,0,0,0,0,1,1,0,0,0,0]
+        ];
+        let actual = Solution::max_area_of_island(grid);
+        let expected = ;
         assert_eq!(actual, expected);
     }
 }
