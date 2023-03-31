@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::collections::{BinaryHeap, HashSet};
 
 struct Solution {}
 
@@ -47,7 +47,47 @@ impl Solution {
         islands
     }
 
-    pub fn max_area_of_island(grid: Vec<Vec<i32>>) -> i32 {}
+    pub fn max_area_of_island(grid: Vec<Vec<i32>>) -> i32 {
+        fn _max_area_of_island(
+            grid: &Vec<Vec<i32>>,
+            current: (isize, isize),
+            arrived: &mut HashSet<(isize, isize)>,
+        ) -> i32 {
+            let mut area = 1;
+            let (x, y) = current;
+            arrived.insert(current);
+            for (x1, y1) in [(1, 0), (-1, 0), (0, 1), (0, -1)].iter() {
+                let (x1, y1) = (*x1, *y1);
+                let next = (x + x1, y + y1);
+                if next.0 < 0
+                    || next.1 < 0
+                    || next.0 >= grid.len() as isize
+                    || next.1 >= grid[0].len() as isize
+                {
+                    continue;
+                }
+                if grid[next.0 as usize][next.1 as usize] == 0 || arrived.contains(&next) {
+                    continue;
+                }
+                area += _max_area_of_island(grid, next, arrived);
+            }
+            area
+        }
+
+        let mut arrived: HashSet<(isize, isize)> = HashSet::new();
+        let mut max_area = 0;
+        for x in 0..grid.len() {
+            for y in 0..grid[0].len() {
+                if grid[x][y] == 1 && !arrived.contains(&(x as isize, y as isize)) {
+                    let area = _max_area_of_island(&grid, (x as isize, y as isize), &mut arrived);
+                    if area > max_area {
+                        max_area = area;
+                    }
+                }
+            }
+        }
+        max_area
+    }
 }
 
 #[cfg(test)]
@@ -70,17 +110,17 @@ mod tests {
     #[test]
     fn test_max_area_of_island() {
         let grid: Vec<Vec<i32>> = vec![
-            vec![0,0,1,0,0,0,0,1,0,0,0,0,0],
-            vec![0,0,0,0,0,0,0,1,1,1,0,0,0],
-            vec![0,1,1,0,1,0,0,0,0,0,0,0,0],
-            vec![0,1,0,0,1,1,0,0,1,0,1,0,0],
-            vec![0,1,0,0,1,1,0,0,1,1,1,0,0],
-            vec![0,0,0,0,0,0,0,0,0,0,1,0,0],
-            vec![0,0,0,0,0,0,0,1,1,1,0,0,0],
-            vec![0,0,0,0,0,0,0,1,1,0,0,0,0]
+            vec![0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+            vec![0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+            vec![0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+            vec![0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0],
+            vec![0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0],
+            vec![0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+            vec![0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+            vec![0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
         ];
         let actual = Solution::max_area_of_island(grid);
-        let expected = ;
+        let expected = 6;
         assert_eq!(actual, expected);
     }
 }
