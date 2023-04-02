@@ -124,7 +124,56 @@ impl Solution {
     }
 
     pub fn oranges_rotting(grid: Vec<Vec<i32>>) -> i32 {
-
+        let mut queue: VecDeque<(isize, isize, i32)> = VecDeque::new();
+        let mut arrived: HashSet<(usize, usize)> = HashSet::new();
+        let directions = vec![(0, 1), (1, 0), (0, -1), (-1, 0)];
+        let mut fresh = 0;
+        for i in 0..grid.len() {
+            for j in 0..grid[0].len() {
+                if grid[i][j] == 1 {
+                    fresh += 1;
+                }
+                if grid[i][j] == 2 {
+                    for direction in directions.iter() {
+                        let (dx, dy) = direction;
+                        queue.push_back((i as isize + dx, j as isize + dy, 1));
+                    }
+                }
+            }
+        }
+        let mut max_length = 0;
+        while let Some(q) = queue.pop_front() {
+            let (x, y, length) = q;
+            // ignore when out of bounds
+            if x < 0 || x >= grid.len() as isize || y < 0 || y >= grid[0].len() as isize {
+                continue;
+            }
+            // empty cell
+            if grid[x as usize][y as usize] == 0 {
+                continue;
+            }
+            // already visited
+            if arrived.contains(&(x as usize, y as usize)) {
+                continue;
+            }
+            // rotten
+            if grid[x as usize][y as usize] == 2 {
+                continue;
+            }
+            // fresh
+            if grid[x as usize][y as usize] == 1 {
+                arrived.insert((x as usize, y as usize));
+                fresh -= 1;
+                for (dx, dy) in directions.iter() {
+                    let (dx, dy) = (*dx, *dy);
+                    queue.push_back((x + dx, y + dy, length + 1));
+                }
+            }
+            if length > max_length {
+                max_length = length;
+            }
+        }
+        return if fresh == 0 { max_length } else { -1 };
     }
 }
 
@@ -171,9 +220,10 @@ mod tests {
     }
 
     #[test]
-    fn test_orenges_rotting() {
+    fn test_oranges_rotting() {
         let grid: Vec<Vec<i32>> = vec![vec![2, 1, 1], vec![1, 1, 0], vec![0, 1, 1]];
         let actual = Solution::oranges_rotting(grid);
         let expected = 4;
         assert_eq!(actual, expected);
+    }
 }
