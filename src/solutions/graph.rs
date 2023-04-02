@@ -1,4 +1,4 @@
-use std::collections::{BinaryHeap, HashSet};
+use std::collections::{BinaryHeap, HashSet, VecDeque};
 
 struct Solution {}
 
@@ -88,9 +88,39 @@ impl Solution {
         }
         max_area
     }
-
     pub fn shortest_path_binary_matrix(grid: Vec<Vec<i32>>) -> i32 {
-
+        let n = grid.len();
+        let mut queue = VecDeque::new();
+        queue.push_back((0, 0, 1));
+        let mut visited = HashSet::new();
+        visited.insert((0, 0));
+        let directions = vec![
+            (0, 1),
+            (1, 0),
+            (0, -1),
+            (-1, 0),
+            (1, 1),
+            (-1, -1),
+            (1, -1),
+            (-1, 1),
+        ];
+        while let Some((r, c, length)) = queue.pop_front() {
+            if r < 0 || r >= n || c < 0 || c >= n || grid[r][c] == 1 {
+                continue;
+            }
+            if r == n - 1 && c == n - 1 {
+                return length;
+            }
+            for (dr, dc) in directions.iter() {
+                let (new_r, new_c) = (r as isize + dr, c as isize + dc);
+                if visited.contains(&(new_r as usize, new_c as usize)) {
+                    continue;
+                }
+                queue.push_back((new_r as usize, new_c as usize, length + 1));
+                visited.insert((new_r as usize, new_c as usize));
+            }
+        }
+        -1
     }
 }
 
@@ -130,10 +160,7 @@ mod tests {
 
     #[test]
     fn test_shortest_path_binary_matrix() {
-        let grid: Vec<Vec<i32>> = vec![
-            vec![0, 1],
-            vec![1, 0],
-        ];
+        let grid: Vec<Vec<i32>> = vec![vec![0, 1], vec![1, 0]];
         let actual = Solution::shortest_path_binary_matrix(grid);
         let expected = 2;
         assert_eq!(actual, expected);
