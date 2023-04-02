@@ -122,6 +122,10 @@ impl Solution {
         }
         -1
     }
+
+    pub fn oranges_rotting(grid: Vec<Vec<i32>>) -> i32 {
+
+    }
 }
 
 #[cfg(test)]
@@ -165,4 +169,11 @@ mod tests {
         let expected = 2;
         assert_eq!(actual, expected);
     }
+
+    #[test]
+    fn test_orenges_rotting() {
+        let grid: Vec<Vec<i32>> = vec![vec![2, 1, 1], vec![1, 1, 0], vec![0, 1, 1]];
+        let actual = Solution::oranges_rotting(grid);
+        let expected = 4;
+        assert_eq!(actual, expected);
 }
