@@ -88,6 +88,10 @@ impl Solution {
         }
         max_area
     }
+
+    pub fn shortest_path_binary_matrix(grid: Vec<Vec<i32>>) -> i32 {
+
+    }
 }
 
 #[cfg(test)]
@@ -121,6 +125,17 @@ mod tests {
         ];
         let actual = Solution::max_area_of_island(grid);
         let expected = 6;
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn test_shortest_path_binary_matrix() {
+        let grid: Vec<Vec<i32>> = vec![
+            vec![0, 1],
+            vec![1, 0],
+        ];
+        let actual = Solution::shortest_path_binary_matrix(grid);
+        let expected = 2;
         assert_eq!(actual, expected);
     }
 }
