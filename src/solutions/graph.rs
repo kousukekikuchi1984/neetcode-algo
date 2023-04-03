@@ -1,4 +1,4 @@
-use std::collections::{BinaryHeap, HashSet, VecDeque};
+use std::collections::{BinaryHeap, HashMap, HashSet, VecDeque};
 
 struct Solution {}
 
@@ -177,7 +177,55 @@ impl Solution {
     }
 
     pub fn can_finish(num_courses: i32, prerequisites: Vec<Vec<i32>>) -> bool {
+        fn _can_finish(
+            graph: &HashMap<i32, Vec<i32>>,
+            course: i32,
+            visited: &mut HashSet<i32>,
+            visiting: &mut HashSet<i32>,
+        ) -> bool {
+            if visiting.contains(&course) {
+                return false;
+            }
+            if visited.contains(&course) {
+                return true;
+            }
 
+            visiting.insert(course);
+            visited.insert(course);
+            if let Some(v) = graph.get(&course) {
+                for pre in v.iter() {
+                    if !_can_finish(graph, *pre, visited, visiting) {
+                        return false;
+                    }
+                }
+            }
+            visiting.remove(&course)
+        }
+
+        let mut graph: HashMap<i32, Vec<i32>> = HashMap::new();
+        // build graph from prerequisites first.
+        for prerequisite in prerequisites.iter() {
+            let (course, pre) = (prerequisite[0], prerequisite[1]);
+            if let Some(v) = graph.get_mut(&course) {
+                v.push(pre);
+            } else {
+                graph.insert(course, vec![pre]);
+            }
+        }
+
+        // visited -> already visited. if exists, return false
+        let mut visited: HashSet<i32> = HashSet::new();
+
+        // visiting is used for detecting cycle. if exists, return true
+        let mut visiting: HashSet<i32> = HashSet::new();
+        for course in 0..num_courses {
+            if !visited.contains(&course) {
+                if !_can_finish(&graph, course, &mut visited, &mut visiting) {
+                    return false;
+                }
+            }
+        }
+        true
     }
 }
 
