@@ -10,3 +10,4 @@ mod sort;
 mod stacks;
 mod static_arrays;
 mod tree;
+mod dynamic_programming;
