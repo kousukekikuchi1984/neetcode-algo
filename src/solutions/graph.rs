@@ -175,6 +175,10 @@ impl Solution {
         }
         return if fresh == 0 { max_length } else { -1 };
     }
+
+    pub fn can_finish(num_courses: i32, prerequisites: Vec<Vec<i32>>) -> bool {
+
+    }
 }
 
 #[cfg(test)]
@@ -224,6 +228,15 @@ mod tests {
         let grid: Vec<Vec<i32>> = vec![vec![2, 1, 1], vec![1, 1, 0], vec![0, 1, 1]];
         let actual = Solution::oranges_rotting(grid);
         let expected = 4;
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn test_can_finish() {
+        let num_courses = 2;
+        let prerequisites = vec![vec![1, 0]];
+        let actual = Solution::can_finish(num_courses, prerequisites);
+        let expected = true;
         assert_eq!(actual, expected);
     }
 }
