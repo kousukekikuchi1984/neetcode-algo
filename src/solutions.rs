@@ -1,5 +1,6 @@
 mod doubly_linked_list;
 mod dynamic_arrays;
+mod dynamic_programming;
 mod fibonacci;
 mod graph;
 mod hash;
@@ -10,4 +11,3 @@ mod sort;
 mod stacks;
 mod static_arrays;
 mod tree;
-mod dynamic_programming;

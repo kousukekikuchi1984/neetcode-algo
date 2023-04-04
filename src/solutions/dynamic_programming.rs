@@ -12,6 +12,12 @@ impl Solution {
         }
         dp[nums.len()]
     }
+
+    pub fn unique_paths(m: i32, n: i32) -> i32 {
+        let r = (m - 1).min(n - 1) as i64;
+        let other = (m + n - 2) as i64 - r;
+        (1..=r).fold(1, |acc, x| acc * (x + other) / x) as i32
+    }
 }
 
 #[cfg(test)]
@@ -24,6 +30,16 @@ mod tests {
         let nums = vec![1, 2, 3, 1];
         let expected = 4;
         let actual = Solution::rob(nums);
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn test_unique_paths() {
+        // ref: https://leetcode.com/problems/unique-paths/
+        let m = 3;
+        let n = 2;
+        let expected = 3;
+        let actual = Solution::unique_paths(m, n);
         assert_eq!(expected, actual);
     }
 }
