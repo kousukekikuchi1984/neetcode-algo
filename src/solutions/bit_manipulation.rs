@@ -20,6 +20,10 @@ impl Solution {
         }
         results
     }
+
+    pub fn reverse_bits(x: u32) -> u32 {
+
+    }
 }
 
 #[cfg(test)]
@@ -42,5 +46,14 @@ mod tests {
     fn test_count_bits() {
         assert_eq!(Solution::count_bits(2), vec![0, 1, 1]);
         assert_eq!(Solution::count_bits(5), vec![0, 1, 1, 2, 1, 2]);
+    }
+
+    #[test]
+    fn test_reverse_bits() {
+        // ref: https://leetcode.com/problems/reverse-bits/
+        assert_eq!(
+            Solution::reverse_bits(0b00000010100101000001111010011100),
+            0b00111001011110000010100101000000
+        );
     }
 }
