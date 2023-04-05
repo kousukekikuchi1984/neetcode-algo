@@ -47,7 +47,12 @@ impl Solution {
         let mut dp = vec![vec![0; text2.len() + 1]; text1.len() + 1];
         for i in 0..text1.len() {
             for j in 0..text2.len() {
-                match text1.chars().nth(i).unwrap().cmp(&text2.chars().nth(j).unwrap()) {
+                match text1
+                    .chars()
+                    .nth(i)
+                    .unwrap()
+                    .cmp(&text2.chars().nth(j).unwrap())
+                {
                     Ordering::Equal => dp[i + 1][j + 1] = dp[i][j] + 1,
                     _ => dp[i + 1][j + 1] = max(dp[i][j + 1], dp[i + 1][j]),
                 }

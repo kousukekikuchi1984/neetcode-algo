@@ -1,3 +1,4 @@
+mod bit_manipulation;
 mod doubly_linked_list;
 mod dynamic_arrays;
 mod dynamic_programming;
@@ -11,4 +12,3 @@ mod sort;
 mod stacks;
 mod static_arrays;
 mod tree;
-mod bit_manipulation;
