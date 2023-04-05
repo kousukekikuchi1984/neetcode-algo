@@ -14,7 +14,11 @@ impl Solution {
     }
 
     pub fn count_bits(n: i32) -> Vec<i32> {
-
+        let mut results = vec![0; n as usize + 1];
+        for i in 1..=n {
+            results[i as usize] = results[i as usize >> 1] + (i & 1);
+        }
+        results
     }
 }
 
@@ -35,14 +39,8 @@ mod tests {
     }
 
     #[test]
-    fn test_counting_bits() {
-        assert_eq!(
-            Solution::count_bits(2),
-            vec![0, 1, 1]
-        );
-        assert_eq!(
-            Solution::count_bits(5),
-            vec![0, 1, 1, 2, 1, 2]
-        );
+    fn test_count_bits() {
+        assert_eq!(Solution::count_bits(2), vec![0, 1, 1]);
+        assert_eq!(Solution::count_bits(5), vec![0, 1, 1, 2, 1, 2]);
     }
 }
