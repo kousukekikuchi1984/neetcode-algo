@@ -32,6 +32,8 @@ impl Solution {
         }
         max_sum
     }
+
+    pub fn max_subarray_sum_circular(nums: Vec<i32>) -> i32 {}
 }
 
 #[cfg(test)]
@@ -50,5 +52,12 @@ mod tests {
             Solution::max_sub_array(vec![-2, 1, -3, 4, -1, 2, 1, -5, 4]),
             6
         );
+    }
+
+    #[test]
+    fn test_max_subarray_sum_circular() {
+        assert_eq!(Solution::max_subarray_sum_circular(vec![1, -2, 3, -2]), 3);
+        assert_eq!(Solution::max_subarray_sum_circular(vec![5, -3, 5]), 10);
+        assert_eq!(Solution::max_subarray_sum_circular(vec![-3, -2, -3]), -2);
     }
 }
