@@ -19,6 +19,10 @@ impl Solution {
         }
         return (cur + 1) as i32;
     }
+
+    pub fn max_sub_array(nums: Vec<i32>) -> i32 {
+
+    }
 }
 
 #[cfg(test)]
@@ -29,5 +33,10 @@ mod tests {
     fn test_remove_element() {
         let mut nums: Vec<i32> = vec![1];
         Solution::remove_element(&mut nums, 1);
+    }
+
+    #[test]
+    fn test_max_sub_array() {
+        assert_eq!(Solution::max_sub_array(vec![-2,1,-3,4,-1,2,1,-5,4]), 6);
     }
 }
