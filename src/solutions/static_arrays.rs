@@ -1,4 +1,4 @@
-use std::cmp::{max, min};
+use std::cmp::{max, min, Ordering};
 
 struct Solution {}
 
@@ -50,13 +50,37 @@ impl Solution {
             i32::max(global_max, total - global_min)
         } else {
             global_max
-        }
+        };
     }
 
     pub fn max_turbulence_size(arr: Vec<i32>) -> i32 {
-
+        if arr.len() < 2 {
+            return arr.len() as i32;
+        }
+        let mut max_len = 1;
+        let mut cur_len = 1;
+        let mut prev_cmp = None;
+        for i in 1..arr.len() {
+            let cmp = arr[i - 1].cmp(&arr[i]);
+            if cmp == Ordering::Equal {
+                cur_len = 1;
+                prev_cmp = None;
+            } else if let Some(prev) = prev_cmp {
+                if prev != cmp {
+                    cur_len += 1;
+                    max_len = max(max_len, cur_len);
+                } else {
+                    cur_len = 2;
+                }
+                prev_cmp = Some(cmp);
+            } else {
+                cur_len += 1;
+                max_len = max(max_len, cur_len);
+                prev_cmp = Some(cmp);
+            }
+        }
+        max_len
     }
-
 }
 
 #[cfg(test)]
@@ -86,7 +110,14 @@ mod tests {
 
     #[test]
     fn test_max_turbulence_size() {
-        assert_eq!(Solution::max_turbulence_size(vec![9, 4, 2, 10, 7, 8, 8, 1, 9]), 5);
-        assert_eq!(Solution::max::turbulence_size(vec![4, 8, 12, 16]), 2);
+        assert_eq!(
+            Solution::max_turbulence_size(vec![9, 4, 2, 10, 7, 8, 8, 1, 9]),
+            5
+        );
+        assert_eq!(Solution::max_turbulence_size(vec![4, 8, 12, 16]), 2);
+        assert_eq!(
+            Solution::max_turbulence_size(vec![0, 1, 1, 0, 1, 0, 1, 1, 0, 0]),
+            5
+        );
     }
 }
