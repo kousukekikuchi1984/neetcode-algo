@@ -52,6 +52,11 @@ impl Solution {
             global_max
         }
     }
+
+    pub fn max_turbulence_size(arr: Vec<i32>) -> i32 {
+
+    }
+
 }
 
 #[cfg(test)]
@@ -77,5 +82,11 @@ mod tests {
         assert_eq!(Solution::max_subarray_sum_circular(vec![1, -2, 3, -2]), 3);
         assert_eq!(Solution::max_subarray_sum_circular(vec![5, -3, 5]), 10);
         assert_eq!(Solution::max_subarray_sum_circular(vec![-3, -2, -3]), -2);
+    }
+
+    #[test]
+    fn test_max_turbulence_size() {
+        assert_eq!(Solution::max_turbulence_size(vec![9, 4, 2, 10, 7, 8, 8, 1, 9]), 5);
+        assert_eq!(Solution::max::turbulence_size(vec![4, 8, 12, 16]), 2);
     }
 }
