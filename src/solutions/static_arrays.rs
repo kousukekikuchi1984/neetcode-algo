@@ -81,6 +81,10 @@ impl Solution {
         }
         max_len
     }
+
+    pub fn contains_nearby_duplicate(nums: Vec<i32>, k: i32) -> bool {
+
+    }
 }
 
 #[cfg(test)]
@@ -119,5 +123,12 @@ mod tests {
             Solution::max_turbulence_size(vec![0, 1, 1, 0, 1, 0, 1, 1, 0, 0]),
             5
         );
+    }
+
+    #[test]
+    fn test_contains_nearby_duplicate() {
+        // ref: https://leetcode.com/problems/contains-duplicate-ii/
+        assert_eq!(Solution::contains_nearby_duplicate(vec![1, 2, 3, 1], 3), true);
+        assert_eq!(Solution::contains_nearby_duplicate(vec![1, 0, 1, 1], 1), true);
     }
 }
