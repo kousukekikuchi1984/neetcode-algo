@@ -99,6 +99,10 @@ impl Solution {
         }
         false
     }
+
+    pub fn num_of_subarrays(arr: Vec<i32>, k: i32, threshold: i32) -> i32 {
+
+    }
 }
 
 #[cfg(test)]
@@ -150,5 +154,11 @@ mod tests {
             Solution::contains_nearby_duplicate(vec![1, 0, 1, 1], 1),
             true
         );
+    }
+
+    #[test]
+    fn test_num_of_subarrays() {
+        // ref: https://leetcode.com/problems/number-of-sub-arrays-of-size-k-and-average-greater-than-or-equal-to-threshold/
+        assert_eq!(Solution::num_of_subarrays(vec![2,2,2,2,5,5,5,8], 3, 4), 3);
     }
 }
