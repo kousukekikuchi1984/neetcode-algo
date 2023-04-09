@@ -1,4 +1,5 @@
 use std::cmp::{max, min, Ordering};
+use std::collections::HashSet;
 
 struct Solution {}
 
@@ -83,7 +84,20 @@ impl Solution {
     }
 
     pub fn contains_nearby_duplicate(nums: Vec<i32>, k: i32) -> bool {
-
+        let mut window = HashSet::new();
+        let mut left: usize = 0;
+        for right in 0..nums.len() {
+            if right - left > k as usize {
+                let val = nums[left];
+                window.remove(&val);
+                left += 1;
+            }
+            if window.contains(&nums[right]) {
+                return true;
+            }
+            window.insert(nums[right]);
+        }
+        false
     }
 }
 
@@ -128,7 +142,13 @@ mod tests {
     #[test]
     fn test_contains_nearby_duplicate() {
         // ref: https://leetcode.com/problems/contains-duplicate-ii/
-        assert_eq!(Solution::contains_nearby_duplicate(vec![1, 2, 3, 1], 3), true);
-        assert_eq!(Solution::contains_nearby_duplicate(vec![1, 0, 1, 1], 1), true);
+        assert_eq!(
+            Solution::contains_nearby_duplicate(vec![1, 2, 3, 1], 3),
+            true
+        );
+        assert_eq!(
+            Solution::contains_nearby_duplicate(vec![1, 0, 1, 1], 1),
+            true
+        );
     }
 }
