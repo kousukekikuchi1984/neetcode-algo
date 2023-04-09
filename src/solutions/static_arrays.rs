@@ -116,7 +116,24 @@ impl Solution {
         count
     }
 
-    pub fn min_sub_array_len(target: i32, nums: Vec<i32>) -> i32 {}
+    pub fn min_sub_array_len(target: i32, nums: Vec<i32>) -> i32 {
+        // sliding window + two pointers
+        let mut min_len = nums.len() + 1;
+        let mut sum = 0;
+        let mut left: usize = 0;
+        for right in 0..nums.len() {
+            sum += nums[right];
+            while sum >= target {
+                min_len = min(min_len, right - left + 1);
+                sum -= nums[left];
+                left += 1;
+            }
+        }
+        if min_len == nums.len() + 1 {
+            return 0;
+        }
+        min_len as i32
+    }
 }
 
 #[cfg(test)]
@@ -183,5 +200,9 @@ mod tests {
     fn test_min_sub_array_len() {
         // ref: https://leetcode.com/problems/minimum-size-subarray-sum/
         assert_eq!(Solution::min_sub_array_len(7, vec![2, 3, 1, 2, 4, 3]), 2);
+        assert_eq!(
+            Solution::min_sub_array_len(11, vec![1, 1, 1, 1, 1, 1, 1, 1]),
+            0
+        );
     }
 }
