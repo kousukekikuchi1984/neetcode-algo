@@ -101,7 +101,19 @@ impl Solution {
     }
 
     pub fn num_of_subarrays(arr: Vec<i32>, k: i32, threshold: i32) -> i32 {
-
+        // strategy: sum of subarray of size k with sliding window
+        let mut sum = 0;
+        let mut count = 0;
+        for i in 0..arr.len() {
+            sum += arr[i];
+            if i >= k as usize {
+                sum -= arr[i - k as usize];
+            }
+            if sum >= k * threshold && i >= k as usize - 1 {
+                count += 1;
+            }
+        }
+        count
     }
 }
 
@@ -159,6 +171,9 @@ mod tests {
     #[test]
     fn test_num_of_subarrays() {
         // ref: https://leetcode.com/problems/number-of-sub-arrays-of-size-k-and-average-greater-than-or-equal-to-threshold/
-        assert_eq!(Solution::num_of_subarrays(vec![2,2,2,2,5,5,5,8], 3, 4), 3);
+        assert_eq!(
+            Solution::num_of_subarrays(vec![2, 2, 2, 2, 5, 5, 5, 8], 3, 4),
+            3
+        );
     }
 }
