@@ -115,6 +115,8 @@ impl Solution {
         }
         count
     }
+
+    pub fn min_sub_array_len(target: i32, nums: Vec<i32>) -> i32 {}
 }
 
 #[cfg(test)]
@@ -175,5 +177,11 @@ mod tests {
             Solution::num_of_subarrays(vec![2, 2, 2, 2, 5, 5, 5, 8], 3, 4),
             3
         );
+    }
+
+    #[test]
+    fn test_min_sub_array_len() {
+        // ref: https://leetcode.com/problems/minimum-size-subarray-sum/
+        assert_eq!(Solution::min_sub_array_len(7, vec![2, 3, 1, 2, 4, 3]), 2);
     }
 }
