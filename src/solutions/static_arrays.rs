@@ -134,6 +134,8 @@ impl Solution {
         }
         min_len as i32
     }
+
+    pub fn length_of_longest_substring(s: String) -> i32 {}
 }
 
 #[cfg(test)]
@@ -203,6 +205,19 @@ mod tests {
         assert_eq!(
             Solution::min_sub_array_len(11, vec![1, 1, 1, 1, 1, 1, 1, 1]),
             0
+        );
+    }
+
+    #[test]
+    fn test_length_of_longest_substring() {
+        // ref: https://leetcode.com/problems/longest-substring-without-repeating-characters/
+        assert_eq!(
+            Solution::length_of_longest_substring("abcabcbb".to_string()),
+            3
+        );
+        assert_eq!(
+            Solution::length_of_longest_substring("bbbbb".to_string()),
+            1
         );
     }
 }
