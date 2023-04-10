@@ -135,7 +135,29 @@ impl Solution {
         min_len as i32
     }
 
-    pub fn length_of_longest_substring(s: String) -> i32 {}
+    pub fn length_of_longest_substring(s: String) -> i32 {
+        let mut max_len = 0;
+        let mut cur = 0;
+        let mut left: usize = 0;
+        let mut current_chars = HashSet::new();
+        let chars: Vec<char> = s.chars().collect();
+        for right in 0..s.len() {
+            let current_char = chars[right];
+            if current_chars.contains(&current_char) {
+                while chars[left] != current_char {
+                    current_chars.remove(&chars[left]);
+                    left += 1;
+                    cur -= 1;
+                }
+                left += 1;
+                cur -= 1;
+            }
+            current_chars.insert(current_char);
+            cur += 1;
+            max_len = max(max_len, cur);
+        }
+        max_len
+    }
 }
 
 #[cfg(test)]
@@ -218,6 +240,11 @@ mod tests {
         assert_eq!(
             Solution::length_of_longest_substring("bbbbb".to_string()),
             1
+        );
+        assert_eq!(Solution::length_of_longest_substring("aab".to_string()), 2);
+        assert_eq!(
+            Solution::length_of_longest_substring("dvdf".to_string()),
+            3
         );
     }
 }
