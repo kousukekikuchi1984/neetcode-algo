@@ -158,6 +158,10 @@ impl Solution {
         }
         max_len
     }
+
+    pub fn character_replacement(s: String, k: i32) -> i32 {
+
+    }
 }
 
 #[cfg(test)]
@@ -246,5 +250,12 @@ mod tests {
             Solution::length_of_longest_substring("dvdf".to_string()),
             3
         );
+    }
+
+    #[test]
+    fn test_character_replacement() {
+        // ref: https://leetcode.com/problems/longest-repeating-character-replacement/
+        assert_eq!(Solution::character_replacement("ABAB".to_string(), 2), 4);
+        assert_eq!(Solution::character_replacement("AABABBA".to_string(), 1), 4);
     }
 }
