@@ -1,5 +1,5 @@
 use std::cmp::{max, min, Ordering};
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 
 struct Solution {}
 
@@ -160,7 +160,21 @@ impl Solution {
     }
 
     pub fn character_replacement(s: String, k: i32) -> i32 {
-
+        let mut max_len = 0;
+        let mut cur = 0;
+        let mut left: usize = 0;
+        let mut char_counts = HashMap::new();
+        let chars = s.chars().collect::<Vec<char>>();
+        for right in 0..chars.len() {
+            *char_counts.entry(chars[right]).or_insert(0) += 1;
+            cur = max(cur, char_counts[&chars[right]]);
+            while right - left + 1 - cur > k as usize {
+                *char_counts.get_mut(&chars[left]).unwrap() -= 1;
+                left += 1;
+            }
+            max_len = max(max_len, right - left + 1);
+        }
+        max_len as i32
     }
 }
 
