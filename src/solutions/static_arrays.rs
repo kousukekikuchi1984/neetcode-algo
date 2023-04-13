@@ -178,7 +178,28 @@ impl Solution {
     }
 
     pub fn is_palindrome(s: String) -> bool {
-
+        let chars = s.chars().collect::<Vec<char>>();
+        let mut left: usize = 0;
+        let mut right = chars.len() - 1;
+        while left <= right {
+            if !chars[left].is_alphanumeric() {
+                left += 1;
+                continue;
+            }
+            if !chars[right].is_alphanumeric() {
+                right -= 1;
+                continue;
+            }
+            if chars[left].to_ascii_lowercase() != chars[right].to_ascii_lowercase() {
+                return false;
+            }
+            if left == right {
+                return true;
+            }
+            left += 1;
+            right -= 1;
+        }
+        true
     }
 }
 
@@ -264,10 +285,7 @@ mod tests {
             1
         );
         assert_eq!(Solution::length_of_longest_substring("aab".to_string()), 2);
-        assert_eq!(
-            Solution::length_of_longest_substring("dvdf".to_string()),
-            3
-        );
+        assert_eq!(Solution::length_of_longest_substring("dvdf".to_string()), 3);
     }
 
     #[test]
@@ -280,8 +298,12 @@ mod tests {
     #[test]
     fn test_is_palindrome() {
         // https://leetcode.com/problems/valid-palindrome/
-        assert_eq!(Solution::is_palindrome("A man, a plan, a canal: Panama".to_string()), true);
+        assert_eq!(
+            Solution::is_palindrome("A man, a plan, a canal: Panama".to_string()),
+            true
+        );
         assert_eq!(Solution::is_palindrome("race a car".to_string()), false);
         assert_eq!(Solution::is_palindrome(" ".to_string()), true);
+        assert_eq!(Solution::is_palindrome("a.".to_string()), true);
     }
 }
