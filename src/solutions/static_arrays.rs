@@ -176,6 +176,10 @@ impl Solution {
         }
         max_len as i32
     }
+
+    pub fn is_palindrome(s: String) -> bool {
+
+    }
 }
 
 #[cfg(test)]
@@ -271,5 +275,13 @@ mod tests {
         // ref: https://leetcode.com/problems/longest-repeating-character-replacement/
         assert_eq!(Solution::character_replacement("ABAB".to_string(), 2), 4);
         assert_eq!(Solution::character_replacement("AABABBA".to_string(), 1), 4);
+    }
+
+    #[test]
+    fn test_is_palindrome() {
+        // https://leetcode.com/problems/valid-palindrome/
+        assert_eq!(Solution::is_palindrome("A man, a plan, a canal: Panama".to_string()), true);
+        assert_eq!(Solution::is_palindrome("race a car".to_string()), false);
+        assert_eq!(Solution::is_palindrome(" ".to_string()), true);
     }
 }
