@@ -203,7 +203,22 @@ impl Solution {
     }
 
     pub fn two_sum(numbers: Vec<i32>, target: i32) -> Vec<i32> {
-
+        // two pointers
+        let mut left: usize = 0;
+        let mut right = numbers.len() - 1;
+        while left < right {
+            let sum = numbers[left] + numbers[right];
+            match target.cmp(&sum) {
+                Ordering::Less => {
+                    right -= 1;
+                }
+                Ordering::Equal => return vec![left as i32 + 1, right as i32 + 1],
+                Ordering::Greater => {
+                    left += 1;
+                }
+            }
+        }
+        unreachable!("No two sum solution");
     }
 }
 
