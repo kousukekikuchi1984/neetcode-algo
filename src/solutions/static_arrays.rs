@@ -221,8 +221,29 @@ impl Solution {
         unreachable!("No two sum solution");
     }
 
-    pub fn remove_duplicates(nums: &mut Vec<i32>) -> i32 {
-
+    pub fn remove_duplicates_2(nums: &mut Vec<i32>) -> i32 {
+        let mut left: usize = 0;
+        let mut right: usize = 1;
+        let mut count = 1;
+        while right < nums.len() {
+            match nums[left].cmp(&nums[right]) {
+                Ordering::Less => {
+                    left = right;
+                    count = 1;
+                    right += 1;
+                },
+                Ordering::Equal => {
+                    count += 1;
+                    if count > 2 {
+                        nums.remove(right);
+                        continue;
+                    }
+                    right += 1;
+                }
+                Ordering::Greater => unreachable!("left should be fixed"),
+            };
+        }
+        nums.len() as i32
     }
 }
 
@@ -328,7 +349,7 @@ mod tests {
         assert_eq!(Solution::is_palindrome("race a car".to_string()), false);
         assert_eq!(Solution::is_palindrome(" ".to_string()), true);
         assert_eq!(Solution::is_palindrome("a.".to_string()), true);
-    }0
+    }
 
     #[test]
     fn test_two_sum() {
@@ -340,7 +361,7 @@ mod tests {
     fn test_remove_duplicates() {
         // https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/
         let mut nums = vec![1, 1, 1, 2, 2, 3];
-        assert_eq!(Solution::remove_duplicates(&mut nums), 5);
+        assert_eq!(Solution::remove_duplicates_2(&mut nums), 5);
         assert_eq!(nums, vec![1, 1, 2, 2, 3]);
     }
 }
