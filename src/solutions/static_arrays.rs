@@ -220,6 +220,10 @@ impl Solution {
         }
         unreachable!("No two sum solution");
     }
+
+    pub fn remove_duplicates(nums: &mut Vec<i32>) -> i32 {
+
+    }
 }
 
 #[cfg(test)]
@@ -324,11 +328,19 @@ mod tests {
         assert_eq!(Solution::is_palindrome("race a car".to_string()), false);
         assert_eq!(Solution::is_palindrome(" ".to_string()), true);
         assert_eq!(Solution::is_palindrome("a.".to_string()), true);
-    }
+    }0
 
     #[test]
     fn test_two_sum() {
         // https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/
         assert_eq!(Solution::two_sum(vec![2, 7, 11, 15], 9), vec![1, 2]);
+    }
+
+    #[test]
+    fn test_remove_duplicates() {
+        // https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/
+        let mut nums = vec![1, 1, 1, 2, 2, 3];
+        assert_eq!(Solution::remove_duplicates(&mut nums), 5);
+        assert_eq!(nums, vec![1, 1, 2, 2, 3]);
     }
 }
