@@ -245,6 +245,10 @@ impl Solution {
         }
         nums.len() as i32
     }
+
+    pub fn max_area(height: Vec<i32>) -> i32 {
+
+    }
 }
 
 #[cfg(test)]
@@ -363,5 +367,11 @@ mod tests {
         let mut nums = vec![1, 1, 1, 2, 2, 3];
         assert_eq!(Solution::remove_duplicates_2(&mut nums), 5);
         assert_eq!(nums, vec![1, 1, 2, 2, 3]);
+    }
+
+    #[test]
+    fn test_max_area() {
+        // https://leetcode.com/problems/container-with-most-water/
+        assert_eq!(Solution::max_area(vec![1, 8, 6, 2, 5, 4, 8, 3, 7]), 49);
     }
 }
