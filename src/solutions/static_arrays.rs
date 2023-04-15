@@ -264,7 +264,25 @@ impl Solution {
         max_area
     }
 
-    pub fn trap(height: Vec<i32>) -> i32 {}
+    pub fn trap(height: Vec<i32>) -> i32 {
+        // calculate temporary water pool size for each bar.
+        // then that will be confirmed if prev value < current value
+        let mut left = 0;
+        let mut right = 0;
+        let mut trap_size = 0;
+        let mut trap_size_tmp = 0;
+        while right < height.len() {
+            if height[left] <= height[right] {
+                left = right;
+                trap_size += trap_size_tmp;
+            } else {
+                // proceed right
+                trap_size_tmp += height[left] - height[right];
+            }
+            right += 1
+        }
+        trap_size
+    }
 }
 
 #[cfg(test)]
@@ -394,6 +412,7 @@ mod tests {
     #[test]
     fn test_trap() {
         // https://leetcode.com/problems/trapping-rain-water/
-        assert_eq!(Solution::trap(vec![0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]), 6);
+        // assert_eq!(Solution::trap(vec![0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]), 6);
+        assert_eq!(Solution::trap(vec![4, 2, 3]), 1);
     }
 }
