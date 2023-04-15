@@ -263,6 +263,8 @@ impl Solution {
         }
         max_area
     }
+
+    pub fn trap(height: Vec<i32>) -> i32 {}
 }
 
 #[cfg(test)]
@@ -387,5 +389,11 @@ mod tests {
     fn test_max_area() {
         // https://leetcode.com/problems/container-with-most-water/
         assert_eq!(Solution::max_area(vec![1, 8, 6, 2, 5, 4, 8, 3, 7]), 49);
+    }
+
+    #[test]
+    fn test_trap() {
+        // https://leetcode.com/problems/trapping-rain-water/
+        assert_eq!(Solution::trap(vec![0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]), 6);
     }
 }
