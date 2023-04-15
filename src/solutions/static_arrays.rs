@@ -231,7 +231,7 @@ impl Solution {
                     left = right;
                     count = 1;
                     right += 1;
-                },
+                }
                 Ordering::Equal => {
                     count += 1;
                     if count > 2 {
@@ -247,7 +247,21 @@ impl Solution {
     }
 
     pub fn max_area(height: Vec<i32>) -> i32 {
+        fn area(left: usize, right: usize, height: &[i32]) -> i32 {
+            (right - left) as i32 * min(height[left], height[right])
+        }
 
+        let mut left = 0;
+        let mut right = height.len() - 1;
+        let mut max_area = area(left, right, &height);
+        while left < right {
+            match height[left].cmp(&height[right]) {
+                Ordering::Less | Ordering::Equal => left += 1,
+                Ordering::Greater => right -= 1,
+            }
+            max_area = max(max_area, area(left, right, &height));
+        }
+        max_area
     }
 }
 
