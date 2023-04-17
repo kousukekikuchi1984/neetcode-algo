@@ -265,23 +265,27 @@ impl Solution {
     }
 
     pub fn trap(height: Vec<i32>) -> i32 {
-        // calculate temporary water pool size for each bar.
-        // then that will be confirmed if prev value < current value
         let mut left = 0;
-        let mut right = 0;
-        let mut trap_size = 0;
-        let mut trap_size_tmp = 0;
-        while right < height.len() {
-            if height[left] <= height[right] {
-                left = right;
-                trap_size += trap_size_tmp;
-            } else {
-                // proceed right
-                trap_size_tmp += height[left] - height[right];
-            }
-            right += 1
+        let mut right = height.len() - 1;
+        let mut left_max = height[left];
+        let mut right_max = height[right];
+        let mut result = 0;
+
+        while left < right {
+            match left_max.cmp(&right_max) {
+                Ordering::Less => {
+                    left += 1;
+                    left_max = max(left_max, height[left]);
+                    result += left_max - height[left];
+                }
+                Ordering::Equal | Ordering::Greater => {
+                    right -= 1;
+                    right_max = max(right_max, height[right]);
+                    result += right_max - height[right];
+                }
+            };
         }
-        trap_size
+        result
     }
 }
 
