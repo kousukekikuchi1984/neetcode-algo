@@ -289,9 +289,21 @@ impl Solution {
     }
 }
 
+struct NumArray {
+
+}
+
+impl NumArray {
+
+    fn new(nums: Vec<i32>) -> Self {}
+
+    fn sum_range(&self, left: i32, right: i32) -> i32 {}
+}
+
 #[cfg(test)]
 mod tests {
     use super::Solution;
+    use super::NumArray;
 
     #[test]
     fn test_remove_element() {
@@ -418,5 +430,15 @@ mod tests {
         // https://leetcode.com/problems/trapping-rain-water/
         // assert_eq!(Solution::trap(vec![0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]), 6);
         assert_eq!(Solution::trap(vec![4, 2, 3]), 1);
+    }
+
+    #[test]
+    fn test_range_sum_query() {
+        // https://leetcode.com/problems/range-sum-query-immutable/
+        let nums = vec![-2, 0, 3, -5, 2, -1];
+        let obj = NumArray::new(nums);
+        assert_eq!(obj.sum_range(0, 2), 1);
+        assert_eq!(obj.sum_range(2, 5), -1);
+        assert_eq!(obj.sum_range(0, 5), -3);
     }
 }
