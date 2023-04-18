@@ -288,7 +288,20 @@ impl Solution {
         result
     }
 
-    pub fn pivot_index(nums: Vec<i32>) -> i32 {}
+    pub fn pivot_index(nums: Vec<i32>) -> i32 {
+        let mut sum = vec![0; nums.len() + 1];
+        let mut index = -1;
+        for i in 0..nums.len() {
+            sum[i + 1] = sum[i] + nums[i];
+        }
+        for i in 1..sum.len() {
+            if sum[i - 1] == sum[sum.len() - 1] - sum[i] {
+                index = i as i32 -1;
+                break
+            }
+        }
+        index
+    }
 }
 
 struct NumArray {
