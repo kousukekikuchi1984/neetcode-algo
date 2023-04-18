@@ -296,12 +296,14 @@ impl Solution {
         }
         for i in 1..sum.len() {
             if sum[i - 1] == sum[sum.len() - 1] - sum[i] {
-                index = i as i32 -1;
-                break
+                index = i as i32 - 1;
+                break;
             }
         }
         index
     }
+
+    pub fn product_except_self(nums: Vec<i32>) -> Vec<i32> {}
 }
 
 struct NumArray {
@@ -509,5 +511,18 @@ mod tests {
         assert_eq!(Solution::pivot_index(vec![1, 7, 3, 6, 5, 6]), 3);
         assert_eq!(Solution::pivot_index(vec![1, 2, 3]), -1);
         assert_eq!(Solution::pivot_index(vec![2, 1, -1]), 0);
+    }
+
+    #[test]
+    fn test_product_except_self() {
+        // ref: https://leetcode.com/problems/product-of-array-except-self/
+        assert_eq!(
+            Solution::product_except_self(vec![1, 2, 3, 4]),
+            vec![24, 12, 8, 6]
+        );
+        assert_eq!(
+            Solution::product_except_self(vec![-1, 1, 0, -3, 3]),
+            vec![0, 0, 9, 0, 0]
+        );
     }
 }
