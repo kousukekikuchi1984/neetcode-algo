@@ -317,6 +317,10 @@ impl Solution {
 
         result
     }
+
+    pub fn subarray_sum(nums: Vec<i32>, k: i32) -> i32 {
+
+    }
 }
 
 struct NumArray {
@@ -537,5 +541,12 @@ mod tests {
             Solution::product_except_self(vec![-1, 1, 0, -3, 3]),
             vec![0, 0, 9, 0, 0]
         );
+    }
+
+    #[test]
+    fn test_subarray_sum() {
+        // ref: https://leetcode.com/problems/subarray-sum-equals-k/
+        assert_eq!(Solution::subarray_sum(vec![1, 1, 1], 2), 2);
+        assert_eq!(Solution::subarray_sum(vec![1, 2, 3], 3), 2);
     }
 }
