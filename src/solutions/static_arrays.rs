@@ -287,6 +287,8 @@ impl Solution {
         }
         result
     }
+
+    pub fn pivot_index(nums: Vec<i32>) -> i32 {}
 }
 
 struct NumArray {
@@ -486,5 +488,13 @@ mod tests {
         assert_eq!(obj.sum_region(2, 1, 4, 3), 8);
         assert_eq!(obj.sum_region(1, 1, 2, 2), 11);
         assert_eq!(obj.sum_region(1, 2, 2, 4), 12);
+    }
+
+    #[test]
+    fn test_pivot_index() {
+        // ref: https://leetcode.com/problems/find-pivot-index/
+        assert_eq!(Solution::pivot_index(vec![1, 7, 3, 6, 5, 6]), 3);
+        assert_eq!(Solution::pivot_index(vec![1, 2, 3]), -1);
+        assert_eq!(Solution::pivot_index(vec![2, 1, -1]), 0);
     }
 }
