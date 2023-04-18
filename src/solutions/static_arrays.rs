@@ -303,7 +303,20 @@ impl Solution {
         index
     }
 
-    pub fn product_except_self(nums: Vec<i32>) -> Vec<i32> {}
+    pub fn product_except_self(nums: Vec<i32>) -> Vec<i32> {
+        let mut product_left = vec![1; nums.len() + 1];
+        let mut product_right = vec![1; nums.len() + 1];
+        let mut result = vec![0; nums.len()];
+        for i in 0..nums.len() {
+            product_left[i + 1] = product_left[i] * nums[i];
+            product_right[nums.len() - i - 1] = product_right[nums.len() - i] * nums[nums.len() - i - 1];
+        }
+        for i in 0..nums.len() {
+            result[i] = product_left[i] * product_right[i + 1];
+        }
+
+        result
+    }
 }
 
 struct NumArray {
