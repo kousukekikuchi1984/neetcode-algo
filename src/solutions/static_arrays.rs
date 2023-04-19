@@ -309,7 +309,8 @@ impl Solution {
         let mut result = vec![0; nums.len()];
         for i in 0..nums.len() {
             product_left[i + 1] = product_left[i] * nums[i];
-            product_right[nums.len() - i - 1] = product_right[nums.len() - i] * nums[nums.len() - i - 1];
+            product_right[nums.len() - i - 1] =
+                product_right[nums.len() - i] * nums[nums.len() - i - 1];
         }
         for i in 0..nums.len() {
             result[i] = product_left[i] * product_right[i + 1];
@@ -319,7 +320,19 @@ impl Solution {
     }
 
     pub fn subarray_sum(nums: Vec<i32>, k: i32) -> i32 {
-
+        let mut sum = vec![0; nums.len() + 1];
+        let mut result = 0;
+        for i in 0..nums.len() {
+            sum[i + 1] = sum[i] + nums[i];
+        }
+        for i in 0..nums.len() {
+            for j in i + 1..=nums.len() {
+                if sum[j] - sum[i] == k {
+                    result += 1;
+                }
+            }
+        }
+        result
     }
 }
 
