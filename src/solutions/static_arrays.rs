@@ -320,19 +320,16 @@ impl Solution {
     }
 
     pub fn subarray_sum(nums: Vec<i32>, k: i32) -> i32 {
-        let mut sum = vec![0; nums.len() + 1];
-        let mut result = 0;
-        for i in 0..nums.len() {
-            sum[i + 1] = sum[i] + nums[i];
+        let mut sum = 0;
+        let mut count = 0;
+        let mut map = HashMap::with_capacity(nums.len() / 2);
+        map.insert(0, 1);
+        for num in nums {
+            sum += num;
+            count += map.get(&(sum - k)).copied().unwrap_or(0);
+            map.entry(sum).and_modify(|e| *e = *e + 1).or_insert(1);
         }
-        for i in 0..nums.len() {
-            for j in i + 1..=nums.len() {
-                if sum[j] - sum[i] == k {
-                    result += 1;
-                }
-            }
-        }
-        result
+        count
     }
 }
 
