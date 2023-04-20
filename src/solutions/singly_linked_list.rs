@@ -78,6 +78,19 @@ impl Solution {
     // fn reverse_list_recursive(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
     //     _reverse_list(None, head)
     // }
+
+    pub fn middle_node(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
+        if head.is_none() {
+            return None
+        }
+        let mut slow = &head;
+        let mut fast = &head;
+        while fast.is_some() && fast.as_ref().unwrap().next.is_some() {
+            slow = &slow.as_ref().unwrap().next;
+            fast = &fast.as_ref().unwrap().next.as_ref().unwrap().next;
+        }
+        slow.clone()
+    }
 }
 
 #[cfg(test)]
