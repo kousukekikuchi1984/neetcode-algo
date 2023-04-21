@@ -91,14 +91,31 @@ impl Solution {
         }
         slow.clone()
     }
+
+    pub fn pair_sum(head: Option<Box<ListNode>>) -> i32 {
+    }
+}
 }
 
 #[cfg(test)]
 mod tests {
     use super::Solution;
+    use super::ListNode;
 
     #[test]
     fn test_list() {
         Solution::reverse_list(None);
+    }
+
+    #[test]
+    fn test_pair_sum() {
+        let mut list = ListNode::new(1);
+        list.next = Some(Box::new(ListNode::new(2)));
+        list.next.as_mut().unwrap().next = Some(Box::new(ListNode::new(3)));
+        list.next.as_mut().unwrap().next.as_mut().unwrap().next = Some(Box::new(ListNode::new(4)));
+        list.next.as_mut().unwrap().next.as_mut().unwrap().next.as_mut().unwrap().next = Some(Box::new(ListNode::new(5)));
+        list.next.as_mut().unwrap().next.as_mut().unwrap().next.as_mut().unwrap().next.as_mut().unwrap().next = Some(Box::new(ListNode::new(6)));
+        list.next.as_mut().unwrap().next.as_mut().unwrap().next.as_mut().unwrap().next.as_mut().unwrap().next.as_mut().unwrap().next = Some(Box::new(ListNode::new(7)));
+        assert_eq!(Solution::pair_sum(Some(Box::new(list))), 7);
     }
 }
