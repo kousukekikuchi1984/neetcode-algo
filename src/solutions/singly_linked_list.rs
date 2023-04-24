@@ -91,35 +91,6 @@ impl Solution {
         }
         slow.clone()
     }
-
-    pub fn pair_sum(mut head: Option<Box<ListNode>>) -> i32 {
-        return 0;
-        // wip: fix error of borrow checker
-        // the length of head is even
-        // fast-slow pointer
-        let mut slow: &Option<Box<ListNode>> = &head;
-        let mut fast: &Option<Box<ListNode>> = &head;
-        let mut prev: &Option<Box<ListNode>> = &None;
-        let mut num = 0;
-        // reverse slow
-        while fast.is_some() && fast.unwrap().next.is_some() {
-            slow = &slow.unwrap().next;
-            let temp = slow.unwrap().next.take();
-            slow.unwrap().next = prev.take();
-            prev = slow;
-            fast = &fast.unwrap().next.unwrap().next;
-        }
-        // fast -> out of bound
-        // slow -> from middle to end
-        // prev -> from start to middle
-        while slow.is_some() && prev.is_some() {
-            // compare num and slow.val + prev.val
-            num = num.max(slow.as_ref().unwrap().val + prev.as_ref().unwrap().val);
-            slow = &slow.as_ref().unwrap().next;
-            prev = &prev.as_ref().unwrap().next;
-        }
-        num
-    }
 }
 
 #[cfg(test)]
@@ -130,54 +101,5 @@ mod tests {
     #[test]
     fn test_list() {
         Solution::reverse_list(None);
-    }
-
-    #[test]
-    #[ignore]
-    fn test_pair_sum() {
-        let mut list = ListNode::new(1);
-        list.next = Some(Box::new(ListNode::new(2)));
-        list.next.as_mut().unwrap().next = Some(Box::new(ListNode::new(3)));
-        list.next.as_mut().unwrap().next.as_mut().unwrap().next = Some(Box::new(ListNode::new(4)));
-        list.next
-            .as_mut()
-            .unwrap()
-            .next
-            .as_mut()
-            .unwrap()
-            .next
-            .as_mut()
-            .unwrap()
-            .next = Some(Box::new(ListNode::new(5)));
-        list.next
-            .as_mut()
-            .unwrap()
-            .next
-            .as_mut()
-            .unwrap()
-            .next
-            .as_mut()
-            .unwrap()
-            .next
-            .as_mut()
-            .unwrap()
-            .next = Some(Box::new(ListNode::new(6)));
-        list.next
-            .as_mut()
-            .unwrap()
-            .next
-            .as_mut()
-            .unwrap()
-            .next
-            .as_mut()
-            .unwrap()
-            .next
-            .as_mut()
-            .unwrap()
-            .next
-            .as_mut()
-            .unwrap()
-            .next = Some(Box::new(ListNode::new(7)));
-        assert_eq!(Solution::pair_sum(Some(Box::new(list))), 7);
     }
 }
