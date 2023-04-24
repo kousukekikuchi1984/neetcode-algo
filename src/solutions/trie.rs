@@ -44,10 +44,35 @@ impl Trie {
     }
 }
 
+struct WordDictionary {
+
+}
+
+
+/**
+ * `&self` means the method takes an immutable reference.
+ * If you need a mutable reference, change it to `&mut self` instead.
+ */
+impl WordDictionary {
+
+    fn new() -> Self {
+
+    }
+
+    fn add_word(&self, word: String) {
+
+    }
+
+    fn search(&self, word: String) -> bool {
+
+    }
+}
+
 
 #[cfg(test)]
 mod test {
     use super::Trie;
+    use super::WordDictionary;
 
     #[test]
     fn test_prefix_tree() {
@@ -56,5 +81,22 @@ mod test {
         trie.insert("apple".to_string());
         assert_eq!(trie.search("apple".to_string()), true);
         assert_eq!(trie.search("app".to_string()), false);
+    }
+
+    #[test]
+    fn test_word_dictionary() {
+        // ref: https://leetcode.com/problems/design-add-and-search-words-data-structure/
+        let mut wd = WordDictionary::new();
+        wd.add_word("bad".to_string());
+        wd.add_word("dad".to_string());
+        wd.add_word("mad".to_string());
+        wd.add_word("pad".to_string());
+        assert_eq!(wd.search("bad".to_string()), true);
+        assert_eq!(wd.search("dad".to_string()), true);
+        assert_eq!(wd.search("mad".to_string()), true);
+        assert_eq!(wd.search("pad".to_string()), true);
+        assert_eq!(wd.search(".ad".to_string()), true);
+        assert_eq!(wd.search("b..".to_string()), true);
+        assert_eq!(wd.search("b...".to_string()), false);
     }
 }
