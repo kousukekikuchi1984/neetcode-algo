@@ -45,29 +45,55 @@ impl Trie {
 }
 
 struct WordDictionary {
-
+    children: HashMap<char, WordDictionary>,
+    word: bool,
 }
 
-
-/**
- * `&self` means the method takes an immutable reference.
- * If you need a mutable reference, change it to `&mut self` instead.
- */
 impl WordDictionary {
-
     fn new() -> Self {
-
+        Self {
+            children: HashMap::new(),
+            word: false,
+        }
     }
 
-    fn add_word(&self, word: String) {
-
+    fn add_word(&mut self, word: String) {
+        let mut cur = self;
+        for c in word.chars() {
+            cur = cur.children.entry(c).or_insert(WordDictionary::new());
+        }
+        cur.word = true;
     }
 
-    fn search(&self, word: String) -> bool {
+    fn search(&mut self, word: String) -> bool {
+        let word: Vec<char> = word.chars().collect();
+        self._search(&word)
+    }
 
+    fn _search(&self, word: &[char]) -> bool {
+        if word.is_empty() {
+            return self.word;
+        }
+
+        let c = word[0];
+        match c {
+            '.' => {
+                for (_, child) in self.children.iter() {
+                    if child._search(&word[1..]) {
+                        return true;
+                    }
+                }
+                false
+            },
+            _ => {
+                match self.children.get(&c) {
+                    Some(child) => child._search(&word[1..]),
+                    None => false,
+                }
+            },
+        }
     }
 }
-
 
 #[cfg(test)]
 mod test {
