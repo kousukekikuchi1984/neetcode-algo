@@ -84,19 +84,22 @@ impl WordDictionary {
                     }
                 }
                 false
-            },
-            _ => {
-                match self.children.get(&c) {
-                    Some(child) => child._search(&word[1..]),
-                    None => false,
-                }
+            }
+            _ => match self.children.get(&c) {
+                Some(child) => child._search(&word[1..]),
+                None => false,
             },
         }
     }
 }
 
+impl Solution {
+    pub fn find_words(board: Vec<Vec<char>>, words: Vec<String>) -> Vec<String> {}
+}
+
 #[cfg(test)]
 mod test {
+    use super::Solution;
     use super::Trie;
     use super::WordDictionary;
 
@@ -124,5 +127,22 @@ mod test {
         assert_eq!(wd.search(".ad".to_string()), true);
         assert_eq!(wd.search("b..".to_string()), true);
         assert_eq!(wd.search("b...".to_string()), false);
+    }
+
+    #[test]
+    fn test_find_words() {
+        // ref: https://leetcode.com/problems/word-search-ii/
+        let board = vec![
+            vec!['o', 'a', 'a', 'n'],
+            vec!['e', 't', 'a', 'e'],
+            vec!['i', 'h', 'k', 'r'],
+            vec!['i', 'f', 'l', 'v'],
+        ];
+        let words = vec!["oath", "pea", "eat", "rain"]
+            .iter()
+            .map(|s| s.to_string())
+            .collect();
+        let expected = vec!["eat", "oath"];
+        assert_eq!(Solution::find_words(board, words), expected);
     }
 }
