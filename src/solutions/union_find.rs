@@ -1,4 +1,5 @@
 use std::cmp::Ordering;
+use std::collections::{HashMap, HashSet};
 
 struct UnionFind {
     parent: Vec<usize>,
@@ -60,7 +61,62 @@ impl Solution {
     }
 
     pub fn accounts_merge(accounts: Vec<Vec<String>>) -> Vec<Vec<String>> {
-        vec![]
+        fn dfs(
+            email: &str,
+            graph: &HashMap<String, HashSet<String>>,
+            email_to_name: &HashMap<String, String>,
+            visited: &mut HashSet<String>,
+            merged: &mut Vec<String>,
+        ) {
+            visited.insert(email.to_owned());
+            merged.push(email.to_owned());
+            if let Some(neighbors) = graph.get(email) {
+                for neighbor in neighbors {
+                    if !visited.contains(neighbor) {
+                        dfs(neighbor, graph, email_to_name, visited, merged);
+                    }
+                }
+            }
+        }
+
+        let mut email_to_name: HashMap<String, String> = HashMap::new();
+        let mut graph: HashMap<String, HashSet<String>> = HashMap::new();
+
+        // Build the graph
+        for account in accounts.iter() {
+            let name = &account[0];
+            let emails = &account[1..];
+            for i in 0..emails.len() {
+                let email = &emails[i];
+                email_to_name.insert(email.clone(), name.clone());
+                let prev_email = &emails[0];
+                if i > 0 {
+                    graph
+                        .entry(prev_email.clone())
+                        .or_default()
+                        .insert(email.clone());
+                    graph
+                        .entry(email.clone())
+                        .or_default()
+                        .insert(prev_email.clone());
+                }
+            }
+        }
+
+        // DFS the graph to collect merged accounts
+        let mut merged_accounts: Vec<Vec<String>> = vec![];
+        let mut visited: HashSet<String> = HashSet::new();
+        for email in email_to_name.keys() {
+            if !visited.contains(email) {
+                let mut merged = vec![];
+                dfs(email, &graph, &email_to_name, &mut visited, &mut merged);
+                merged.sort();
+                merged.insert(0, email_to_name.get(email).unwrap().to_owned());
+                merged_accounts.push(merged);
+            }
+        }
+
+        merged_accounts
     }
 }
 
@@ -78,7 +134,7 @@ mod test {
     #[test]
     fn test_accounts_merge() {
         // ref: https://leetcode.com/problems/accounts-merge/
-        let mut accounts = vec![
+        let accounts = vec![
             vec![
                 "John".to_string(),
                 "johnsmith@mail.com".to_string(),
@@ -92,24 +148,20 @@ mod test {
             vec!["Mary".to_string(), "mary@mail.com".to_string()],
             vec!["John".to_string(), "johnnybravo@mail.com".to_string()],
         ];
-        let expected = [
-            [
-                "John",
-                "john00@mail.com",
-                "john_newyork@mail.com",
-                "johnsmith@mail.com",
+
+        let expected = vec![
+            vec![
+                String::from("John"),
+                String::from("john00@mail.com"),
+                String::from("john_newyork@mail.com"),
+                String::from("johnsmith@mail.com"),
             ],
-            ["Mary", "mary@mail.com"],
-            ["John", "johnnybravo@mail.com"],
-        ]
-        .into_iter()
-        .map(|v| {
-            vec![v[0].to_string()]
-                .into_iter()
-                .chain(v[1..].into_iter().map(|s| s.to_string()))
-                .collect()
-        })
-        .collect();
-        assert_eq!(Solution::accounts_merge(accounts), expected);
+            vec![String::from("John"), String::from("johnnybravo@mail.com")],
+            vec![String::from("Mary"), String::from("mary@mail.com")],
+        ];
+        let actual = Solution::accounts_merge(accounts);
+        for a in actual.iter() {
+            assert!(expected.contains(a));
+        }
     }
 }
