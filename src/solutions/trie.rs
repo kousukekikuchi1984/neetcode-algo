@@ -143,16 +143,16 @@ impl Solution {
         let mut trie = TrieFW::new();
         let (m, n) = (board.len(), board[0].len());
 
-        for word in words{
+        for word in words {
             trie.insert(word);
         }
 
         let mut word = String::new();
         let mut res = vec![];
 
-        for i in 0..m{
-            for j in 0..n{
-                dfs(&mut board, &mut trie, &mut res, &mut word,  i, j);
+        for i in 0..m {
+            for j in 0..n {
+                dfs(&mut board, &mut trie, &mut res, &mut word, i, j);
             }
         }
         res

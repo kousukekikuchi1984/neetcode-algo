@@ -13,3 +13,4 @@ mod stacks;
 mod static_arrays;
 mod tree;
 mod trie;
+mod union_find;
