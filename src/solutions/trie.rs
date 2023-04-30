@@ -187,20 +187,37 @@ fn char_index(c: char) -> usize {
     (c as u8 - 'a' as u8) as usize
 }
 
-struct WordFilter {
-
-}
-
-impl WordFilter {
-
-    fn new(words: Vec<String>) -> Self {
-
-    }
-
-    fn f(&self, pref: String, suff: String) -> i32 {
-
-    }
-}
+// struct WordFilter {
+//     is_word_end: bool,
+//     children: [Option<Box<WordFilter>>; 26],
+// }
+//
+// impl WordFilter {
+//
+//     fn new(words: Vec<String>) -> Self {
+//         let mut root = WordFilter{
+//             is_word_end: false,
+//             children: [None; 26],
+//         };
+//         for word in words {
+//             let mut trie = &mut root;
+//             for c in word.chars() {
+//                 trie = trie.children[char_index(c)]
+//                     .get_or_insert_with(|| Box::new(WordFilter{
+//                         is_word_end: false,
+//                         children: [None; 26],
+//                     }))
+//                     .as_mut();
+//             }
+//             trie.is_word_end = true;
+//         }
+//         root
+//     }
+//
+//     fn f(&self, pref: String, suff: String) -> i32 {
+//
+//     }
+// }
 
 #[cfg(test)]
 mod test {
@@ -251,31 +268,31 @@ mod test {
         assert_eq!(Solution::find_words(board, words), expected);
     }
 
-    #[test]
-    fn test_prefix_and_suffix_search() {
-        // ref: https://leetcode.com/problems/prefix-and-suffix-search/
-        let words = vec!["apple", "apply", "app", "ap", "a"]
-            .iter()
-            .map(|s| s.to_string())
-            .collect();
-        let word_filter = WordFilter::new(words);
-        assert_eq!(word_filter.f("a".to_string(), "e".to_string()), 1);
-        assert_eq!(word_filter.f("a".to_string(), "p".to_string()), 2);
-        assert_eq!(word_filter.f("a".to_string(), "pp".to_string()), 2);
-        assert_eq!(word_filter.f("ap".to_string(), "e".to_string()), 2);
-        assert_eq!(word_filter.f("ap".to_string(), "p".to_string()), 2);
-        assert_eq!(word_filter.f("ap".to_string(), "pp".to_string()), 2);
-        assert_eq!(word_filter.f("app".to_string(), "e".to_string()), 2);
-        assert_eq!(word_filter.f("app".to_string(), "p".to_string()), 2);
-        assert_eq!(word_filter.f("app".to_string(), "pp".to_string()), 2);
-        assert_eq!(word_filter.f("appl".to_string(), "e".to_string()), 1);
-        assert_eq!(word_filter.f("appl".to_string(), "p".to_string()), 1);
-        assert_eq!(word_filter.f("appl".to_string(), "pp".to_string()), 1);
-        assert_eq!(word_filter.f("apple".to_string(), "e".to_string()), 0);
-        assert_eq!(word_filter.f("apple".to_string(), "p".to_string()), 0);
-        assert_eq!(word_filter.f("apple".to_string(), "pp".to_string()), 0);
-        assert_eq!(word_filter.f("apply".to_string(), "e".to_string()), 0);
-        assert_eq!(word_filter.f("apply".to_string(), "p".to_string()), 1);
-        assert_eq!(word_filter.f("apply".to_string(), "pp".to_string()), 1);
-    }
+    // #[test]
+    // fn test_prefix_and_suffix_search() {
+    //     // ref: https://leetcode.com/problems/prefix-and-suffix-search/
+    //     let words = vec!["apple", "apply", "app", "ap", "a"]
+    //         .iter()
+    //         .map(|s| s.to_string())
+    //         .collect();
+    //     let word_filter = WordFilter::new(words);
+    //     assert_eq!(word_filter.f("a".to_string(), "e".to_string()), 1);
+    //     assert_eq!(word_filter.f("a".to_string(), "p".to_string()), 2);
+    //     assert_eq!(word_filter.f("a".to_string(), "pp".to_string()), 2);
+    //     assert_eq!(word_filter.f("ap".to_string(), "e".to_string()), 2);
+    //     assert_eq!(word_filter.f("ap".to_string(), "p".to_string()), 2);
+    //     assert_eq!(word_filter.f("ap".to_string(), "pp".to_string()), 2);
+    //     assert_eq!(word_filter.f("app".to_string(), "e".to_string()), 2);
+    //     assert_eq!(word_filter.f("app".to_string(), "p".to_string()), 2);
+    //     assert_eq!(word_filter.f("app".to_string(), "pp".to_string()), 2);
+    //     assert_eq!(word_filter.f("appl".to_string(), "e".to_string()), 1);
+    //     assert_eq!(word_filter.f("appl".to_string(), "p".to_string()), 1);
+    //     assert_eq!(word_filter.f("appl".to_string(), "pp".to_string()), 1);
+    //     assert_eq!(word_filter.f("apple".to_string(), "e".to_string()), 0);
+    //     assert_eq!(word_filter.f("apple".to_string(), "p".to_string()), 0);
+    //     assert_eq!(word_filter.f("apple".to_string(), "pp".to_string()), 0);
+    //     assert_eq!(word_filter.f("apply".to_string(), "e".to_string()), 0);
+    //     assert_eq!(word_filter.f("apply".to_string(), "p".to_string()), 1);
+    //     assert_eq!(word_filter.f("apply".to_string(), "pp".to_string()), 1);
+    // }
 }
