@@ -58,6 +58,10 @@ impl Solution {
         }
         unreachable!()
     }
+
+    pub fn accounts_merge(accounts: Vec<Vec<String>>) -> Vec<Vec<String>> {
+        vec![]
+    }
 }
 
 #[cfg(test)]
@@ -69,5 +73,43 @@ mod test {
         let edges = vec![vec![1, 2], vec![1, 3], vec![2, 3]];
         let expected = vec![2, 3];
         assert_eq!(Solution::find_redundant_connection(edges), expected);
+    }
+
+    #[test]
+    fn test_accounts_merge() {
+        // ref: https://leetcode.com/problems/accounts-merge/
+        let mut accounts = vec![
+            vec![
+                "John".to_string(),
+                "johnsmith@mail.com".to_string(),
+                "john_newyork@mail.com".to_string(),
+            ],
+            vec![
+                "John".to_string(),
+                "johnsmith@mail.com".to_string(),
+                "john00@mail.com".to_string(),
+            ],
+            vec!["Mary".to_string(), "mary@mail.com".to_string()],
+            vec!["John".to_string(), "johnnybravo@mail.com".to_string()],
+        ];
+        let expected = [
+            [
+                "John",
+                "john00@mail.com",
+                "john_newyork@mail.com",
+                "johnsmith@mail.com",
+            ],
+            ["Mary", "mary@mail.com"],
+            ["John", "johnnybravo@mail.com"],
+        ]
+        .into_iter()
+        .map(|v| {
+            vec![v[0].to_string()]
+                .into_iter()
+                .chain(v[1..].into_iter().map(|s| s.to_string()))
+                .collect()
+        })
+        .collect();
+        assert_eq!(Solution::accounts_merge(accounts), expected);
     }
 }
