@@ -187,6 +187,21 @@ fn char_index(c: char) -> usize {
     (c as u8 - 'a' as u8) as usize
 }
 
+struct WordFilter {
+
+}
+
+impl WordFilter {
+
+    fn new(words: Vec<String>) -> Self {
+
+    }
+
+    fn f(&self, pref: String, suff: String) -> i32 {
+
+    }
+}
+
 #[cfg(test)]
 mod test {
     use super::Solution;
@@ -234,5 +249,33 @@ mod test {
             .collect();
         let expected = vec!["oath", "eat"];
         assert_eq!(Solution::find_words(board, words), expected);
+    }
+
+    #[test]
+    fn test_prefix_and_suffix_search() {
+        // ref: https://leetcode.com/problems/prefix-and-suffix-search/
+        let words = vec!["apple", "apply", "app", "ap", "a"]
+            .iter()
+            .map(|s| s.to_string())
+            .collect();
+        let word_filter = WordFilter::new(words);
+        assert_eq!(word_filter.f("a".to_string(), "e".to_string()), 1);
+        assert_eq!(word_filter.f("a".to_string(), "p".to_string()), 2);
+        assert_eq!(word_filter.f("a".to_string(), "pp".to_string()), 2);
+        assert_eq!(word_filter.f("ap".to_string(), "e".to_string()), 2);
+        assert_eq!(word_filter.f("ap".to_string(), "p".to_string()), 2);
+        assert_eq!(word_filter.f("ap".to_string(), "pp".to_string()), 2);
+        assert_eq!(word_filter.f("app".to_string(), "e".to_string()), 2);
+        assert_eq!(word_filter.f("app".to_string(), "p".to_string()), 2);
+        assert_eq!(word_filter.f("app".to_string(), "pp".to_string()), 2);
+        assert_eq!(word_filter.f("appl".to_string(), "e".to_string()), 1);
+        assert_eq!(word_filter.f("appl".to_string(), "p".to_string()), 1);
+        assert_eq!(word_filter.f("appl".to_string(), "pp".to_string()), 1);
+        assert_eq!(word_filter.f("apple".to_string(), "e".to_string()), 0);
+        assert_eq!(word_filter.f("apple".to_string(), "p".to_string()), 0);
+        assert_eq!(word_filter.f("apple".to_string(), "pp".to_string()), 0);
+        assert_eq!(word_filter.f("apply".to_string(), "e".to_string()), 0);
+        assert_eq!(word_filter.f("apply".to_string(), "p".to_string()), 1);
+        assert_eq!(word_filter.f("apply".to_string(), "pp".to_string()), 1);
     }
 }
