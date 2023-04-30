@@ -93,8 +93,98 @@ impl WordDictionary {
     }
 }
 
+struct Solution {}
+
 impl Solution {
-    pub fn find_words(board: Vec<Vec<char>>, words: Vec<String>) -> Vec<String> {}
+    pub fn find_words(mut board: Vec<Vec<char>>, words: Vec<String>) -> Vec<String> {
+        pub fn dfs(
+            board: &mut Vec<Vec<char>>,
+            mut trie: &mut TrieFW,
+            res: &mut Vec<String>,
+            word: &mut String,
+            i: usize,
+            j: usize,
+        ) {
+            let (m, n) = (board.len(), board[0].len());
+
+            if i != usize::MAX && j != usize::MAX && i < m && j < n && board[i][j] != '#' {
+                let c = board[i][j];
+
+                // mark as visited
+                board[i][j] = '#';
+
+                if let Some(ref mut curr_trie) = trie.children[char_index(c)] {
+                    trie = curr_trie.as_mut();
+
+                    word.push(c);
+
+                    if trie.is_word_end {
+                        res.push(word.clone());
+                        trie.is_word_end = false;
+                    }
+
+                    dfs(board, trie, res, word, i + 1, j);
+                    dfs(board, trie, res, word, i, j + 1);
+                    if i > 0 {
+                        dfs(board, trie, res, word, i - 1, j);
+                    }
+                    if j > 0 {
+                        dfs(board, trie, res, word, i, j - 1);
+                    }
+
+                    word.pop();
+                }
+
+                board[i][j] = c;
+            }
+        }
+
+        // return word
+        let mut trie = TrieFW::new();
+        let (m, n) = (board.len(), board[0].len());
+
+        for word in words{
+            trie.insert(word);
+        }
+
+        let mut word = String::new();
+        let mut res = vec![];
+
+        for i in 0..m{
+            for j in 0..n{
+                dfs(&mut board, &mut trie, &mut res, &mut word,  i, j);
+            }
+        }
+        res
+    }
+}
+
+#[derive(Default, Debug, Clone)]
+struct TrieFW {
+    is_word_end: bool,
+    children: [Option<Box<TrieFW>>; 26],
+}
+
+impl TrieFW {
+    fn new() -> Self {
+        Default::default()
+    }
+
+    fn insert(&mut self, word: String) {
+        let mut trie = self;
+
+        for c in word.chars() {
+            trie = trie.children[char_index(c)]
+                .get_or_insert(Box::new(TrieFW::new()))
+                .as_mut();
+        }
+
+        trie.is_word_end = true;
+    }
+}
+
+fn char_index(c: char) -> usize {
+    (c as u8 - 'a' as u8) as usize
 }
 
 #[cfg(test)]
@@ -142,7 +232,7 @@ mod test {
             .iter()
             .map(|s| s.to_string())
             .collect();
-        let expected = vec!["eat", "oath"];
+        let expected = vec!["oath", "eat"];
         assert_eq!(Solution::find_words(board, words), expected);
     }
 }
