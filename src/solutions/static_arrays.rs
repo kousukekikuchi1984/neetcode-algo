@@ -343,6 +343,8 @@ impl Solution {
         }
         s_hash == t_hash
     }
+
+    pub fn group_anagrams(strs: Vec<String>) -> Vec<Vec<String>> {}
 }
 
 struct NumArray {
@@ -575,6 +577,35 @@ mod tests {
     #[test]
     fn test_is_anagram() {
         // ref: https://leetcode.com/problems/valid-anagram/
-        assert_eq!(Solution::is_anagram("anagram".to_string(), "nagaram".to_string()), true);
+        assert_eq!(
+            Solution::is_anagram("anagram".to_string(), "nagaram".to_string()),
+            true
+        );
+    }
+
+    #[test]
+    fn test_group_anagrams() {
+        // ref: https://leetcode.com/problems/group-anagrams/
+        let actual = Solution::group_anagrams(vec![
+            "eat".to_string(),
+            "tea".to_string(),
+            "tan".to_string(),
+            "ate".to_string(),
+            "nat".to_string(),
+            "bat".to_string(),
+        ]);
+        let expected = vec![
+            vec!["bat".to_string()],
+            vec!["nat".to_string(), "tan".to_string()],
+            vec!["ate".to_string(), "eat".to_string(), "tea".to_string()],
+        ];
+
+        // 順序を問わず、要素の一致を確認する
+        assert_eq!(actual.len(), expected.len()); // ベクタの要素数が同じかどうかを確認
+
+        let actual_set: HashSet<Vec<String>> = actual.into_iter().collect(); // 順序を無視するためにHashSetに変換
+        let expected_set: HashSet<Vec<String>> = expected.into_iter().collect(); // 順序を無視するためにHashSetに変換
+
+        assert_eq!(actual_set, expected_set); // HashSet同士の比較で順序を無視して要素の一致を確認
     }
 }
