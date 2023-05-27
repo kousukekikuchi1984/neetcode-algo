@@ -331,6 +331,18 @@ impl Solution {
         }
         count
     }
+
+    pub fn is_anagram(s: String, t: String) -> bool {
+        let mut s_hash: HashMap<char, u32> = HashMap::with_capacity(s.len());
+        let mut t_hash: HashMap<char, u32> = HashMap::with_capacity(t.len());
+        for c in s.chars() {
+            *s_hash.entry(c).or_insert(0) += 1;
+        }
+        for c in t.chars() {
+            *t_hash.entry(c).or_insert(0) += 1;
+        }
+        s_hash == t_hash
+    }
 }
 
 struct NumArray {
@@ -558,5 +570,11 @@ mod tests {
         // ref: https://leetcode.com/problems/subarray-sum-equals-k/
         assert_eq!(Solution::subarray_sum(vec![1, 1, 1], 2), 2);
         assert_eq!(Solution::subarray_sum(vec![1, 2, 3], 3), 2);
+    }
+
+    #[test]
+    fn test_is_anagram() {
+        // ref: https://leetcode.com/problems/valid-anagram/
+        assert_eq!(Solution::is_anagram("anagram".to_string(), "nagaram".to_string()), true);
     }
 }
