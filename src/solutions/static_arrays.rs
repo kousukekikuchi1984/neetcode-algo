@@ -381,6 +381,9 @@ impl Solution {
         }
         all_hash.values().cloned().collect()
     }
+    pub fn top_k_frequent(nums: Vec<i32>, k: i32) -> Vec<i32> {
+
+    }
 }
 
 struct NumArray {
@@ -643,5 +646,13 @@ mod tests {
         let actual_set: HashSet<Vec<String>> = actual.into_iter().collect(); // 順序を無視するためにHashSetに変換
         let expected_set: HashSet<Vec<String>> = expected.into_iter().collect(); // 順序を無視するためにHashSetに変換
         // hard to write a test code
+    }
+
+    #[test]
+    fn test_top_k_frequent() {
+        let nums = vec![1,1,1,2,2,3];
+        let actual = Solution::top_k_frequent(nums, 2);
+        let expected = vec![1, 2];
+        assert_eq!(expected, actual);
     }
 }
