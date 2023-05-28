@@ -348,7 +348,7 @@ impl Solution {
     pub fn group_anagrams(strs: Vec<String>) -> Vec<Vec<String>> {
         #[derive(Eq)]
         struct CharCount {
-            char_map: HashMap<char, u32>
+            char_map: HashMap<char, u32>,
         }
 
         impl Hash for CharCount {
@@ -371,7 +371,7 @@ impl Solution {
         let mut all_hash: HashMap<CharCount, Vec<String>> = HashMap::new();
         for s in strs {
             let mut char_count = CharCount {
-                char_map: HashMap::with_capacity(s.len())
+                char_map: HashMap::with_capacity(s.len()),
             };
             for c in s.chars() {
                 *char_count.char_map.entry(c).or_insert(0) += 1;
@@ -382,7 +382,26 @@ impl Solution {
         all_hash.values().cloned().collect()
     }
     pub fn top_k_frequent(nums: Vec<i32>, k: i32) -> Vec<i32> {
+        use std::collections::BinaryHeap;
+        use std::collections::HashMap;
 
+        let mut hash: HashMap<i32, i32> = HashMap::new();
+        let mut results = vec![];
+        for num in nums {
+            *hash.entry(num).or_insert(0) += 1;
+        }
+
+        let mut heap: BinaryHeap<(i32, i32)> = BinaryHeap::with_capacity(hash.len());
+        for (key, value) in hash.iter() {
+            heap.push((*value, *key));
+        }
+        println!("{:?}", heap);
+
+        for _ in 0..k {
+            let val = heap.pop().unwrap();
+            results.push(val.1);
+        }
+        results
     }
 }
 
@@ -644,13 +663,14 @@ mod tests {
         assert_eq!(actual.len(), expected.len()); // ベクタの要素数が同じかどうかを確認
 
         let actual_set: HashSet<Vec<String>> = actual.into_iter().collect(); // 順序を無視するためにHashSetに変換
-        let expected_set: HashSet<Vec<String>> = expected.into_iter().collect(); // 順序を無視するためにHashSetに変換
+        let expected_set: HashSet<Vec<String>> = expected.into_iter().collect();
+        // 順序を無視するためにHashSetに変換
         // hard to write a test code
     }
 
     #[test]
     fn test_top_k_frequent() {
-        let nums = vec![1,1,1,2,2,3];
+        let nums = vec![1, 1, 1, 2, 2, 3];
         let actual = Solution::top_k_frequent(nums, 2);
         let expected = vec![1, 2];
         assert_eq!(expected, actual);
