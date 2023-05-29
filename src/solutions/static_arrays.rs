@@ -404,7 +404,37 @@ impl Solution {
         results
     }
 
-    pub fn is_valid_sudoku(board: Vec<Vec<char>>) -> bool {}
+    pub fn is_valid_sudoku(board: Vec<Vec<char>>) -> bool {
+        let mut rows: Vec<HashSet<char>> = vec![HashSet::with_capacity(9); 9];
+        let mut columns: Vec<HashSet<char>> = vec![HashSet::with_capacity(9); 9];
+        let mut areas: Vec<HashSet<char>> = vec![HashSet::with_capacity(9); 9];
+
+        for i in 0..9 {
+            for j in 0..9 {
+                let char = board[i][j];
+                if char == '.' {
+                    continue
+                }
+                if rows[j].contains(&char) {
+                    return false;
+                } else {
+                    rows[j].insert(char);
+                }
+                if columns[i].contains(&char) {
+                    return false;
+                } else {
+                    columns[i].insert(char);
+                }
+                let index = (j / 3) + (i / 3) * 3;
+                if areas[index].contains(&char) {
+                    return false;
+                } else {
+                    areas[index].insert(char);
+                }
+            }
+        }
+        true
+    }
 }
 
 struct NumArray {
@@ -680,18 +710,32 @@ mod tests {
 
     #[test]
     fn test_is_valid_sudoku() {
+        // let board: Vec<Vec<char>> = vec![
+        //     vec!['5', '3', '.', '.', '7', '.', '.', '.', '.'],
+        //     vec!['6', '.', '.', '1', '9', '5', '.', '.', '.'],
+        //     vec!['.', '9', '8', '.', '.', '.', '.', '6', '.'],
+        //     vec!['8', '.', '.', '.', '6', '.', '.', '.', '3'],
+        //     vec!['4', '.', '.', '8', '.', '3', '.', '.', '1'],
+        //     vec!['7', '.', '.', '.', '2', '.', '.', '.', '6'],
+        //     vec!['.', '6', '.', '.', '.', '.', '2', '8', '.'],
+        //     vec!['.', '.', '.', '4', '1', '9', '.', '.', '5'],
+        //     vec!['.', '.', '.', '.', '8', '.', '.', '7', '9'],
+        // ];
+        // let actual = Solution::is_valid_sudoku(board);
+        // assert_eq!(actual, true);
+
         let board: Vec<Vec<char>> = vec![
-            vec!['5', '3', '.', '.', '7', '.', '.', '.', '.'],
-            vec!['6', '.', '.', '1', '9', '5', '.', '.', '.'],
-            vec!['.', '9', '8', '.', '.', '.', '.', '6', '.'],
-            vec!['8', '.', '.', '.', '6', '.', '.', '.', '3'],
-            vec!['4', '.', '.', '8', '.', '3', '.', '.', '1'],
-            vec!['7', '.', '.', '.', '2', '.', '.', '.', '6'],
-            vec!['.', '6', '.', '.', '.', '.', '2', '8', '.'],
-            vec!['.', '.', '.', '4', '1', '9', '.', '.', '5'],
-            vec!['.', '.', '.', '.', '8', '.', '.', '7', '9'],
+            vec!['.', '.', '.', '.', '5', '.', '.', '1', '.'],
+            vec!['.', '4', '.', '3', '.', '.', '.', '.', '.'],
+            vec!['.', '.', '.', '.', '.', '3', '.', '.', '1'],
+            vec!['8', '.', '.', '.', '.', '.', '.', '2', '.'],
+            vec!['.', '.', '2', '.', '7', '.', '.', '.', '.'],
+            vec!['.', '1', '5', '.', '.', '.', '.', '.', '.'],
+            vec!['.', '.', '.', '.', '.', '2', '.', '.', '.'],
+            vec!['.', '2', '.', '9', '.', '.', '.', '.', '.'],
+            vec!['.', '.', '4', '.', '.', '.', '.', '.', '.'],
         ];
         let actual = Solution::is_valid_sudoku(board);
-        assert_eq!(actual, true);
+        assert_eq!(actual, false);
     }
 }
