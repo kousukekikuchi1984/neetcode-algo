@@ -403,6 +403,8 @@ impl Solution {
         }
         results
     }
+
+    pub fn is_valid_sudoku(board: Vec<Vec<char>>) -> bool {}
 }
 
 struct NumArray {
@@ -674,5 +676,22 @@ mod tests {
         let actual = Solution::top_k_frequent(nums, 2);
         let expected = vec![1, 2];
         assert_eq!(expected, actual);
+    }
+
+    #[test]
+    fn test_is_valid_sudoku() {
+        let board: Vec<Vec<char>> = vec![
+            vec!['5', '3', '.', '.', '7', '.', '.', '.', '.'],
+            vec!['6', '.', '.', '1', '9', '5', '.', '.', '.'],
+            vec!['.', '9', '8', '.', '.', '.', '.', '6', '.'],
+            vec!['8', '.', '.', '.', '6', '.', '.', '.', '3'],
+            vec!['4', '.', '.', '8', '.', '3', '.', '.', '1'],
+            vec!['7', '.', '.', '.', '2', '.', '.', '.', '6'],
+            vec!['.', '6', '.', '.', '.', '.', '2', '8', '.'],
+            vec!['.', '.', '.', '4', '1', '9', '.', '.', '5'],
+            vec!['.', '.', '.', '.', '8', '.', '.', '7', '9'],
+        ];
+        let actual = Solution::is_valid_sudoku(board);
+        assert_eq!(actual, true);
     }
 }
