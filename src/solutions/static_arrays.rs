@@ -413,7 +413,7 @@ impl Solution {
             for j in 0..9 {
                 let char = board[i][j];
                 if char == '.' {
-                    continue
+                    continue;
                 }
                 if rows[j].contains(&char) {
                     return false;
