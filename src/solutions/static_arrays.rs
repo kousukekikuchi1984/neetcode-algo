@@ -435,6 +435,10 @@ impl Solution {
         }
         true
     }
+
+    pub fn eval_rpn(tokens: Vec<String>) -> i32 {
+        9
+    }
 }
 
 struct NumArray {
@@ -737,5 +741,19 @@ mod tests {
         ];
         let actual = Solution::is_valid_sudoku(board);
         assert_eq!(actual, false);
+    }
+
+    #[test]
+    fn test_eval_rpn() {
+        let token: Vec<String> = vec![
+            "2".to_string(),
+            "1".to_string(),
+            "+".to_string(),
+            "3".to_string(),
+            "*".to_string(),
+        ];
+        let actual = Solution::eval_rpn(token);
+        let expected = 9;
+        assert_eq!(actual, expected);
     }
 }

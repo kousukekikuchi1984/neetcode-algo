@@ -1,4 +1,4 @@
-use std::collections::{HashSet, HashMap};
+use std::collections::{HashMap, HashSet};
 
 struct Solution {}
 
@@ -30,8 +30,8 @@ impl Solution {
 
 #[cfg(test)]
 mod tests {
-    use std::collections::HashSet;
     use super::Solution;
+    use std::collections::HashSet;
 
     #[test]
     fn test_three_sum() {
