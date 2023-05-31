@@ -437,7 +437,36 @@ impl Solution {
     }
 
     pub fn eval_rpn(tokens: Vec<String>) -> i32 {
-        9
+        let mut stack: Vec<i32> = vec![];
+        for token in tokens {
+            match token.as_str() {
+                "+" => {
+                    let second = stack.pop().unwrap();
+                    let first = stack.pop().unwrap();
+                    stack.push(first + second);
+                },
+                "-" => {
+                    let second = stack.pop().unwrap();
+                    let first = stack.pop().unwrap();
+                    stack.push(first - second);
+                },
+                "*" => {
+                    let second = stack.pop().unwrap();
+                    let first = stack.pop().unwrap();
+                    stack.push(first * second);
+                },
+                "/" => {
+                    let second = stack.pop().unwrap();
+                    let first = stack.pop().unwrap();
+                    stack.push(first / second);
+                },
+                _ => {
+                    let val = token.parse::<i32>().unwrap();
+                    stack.push(val);
+                },
+            }
+        }
+        stack[0]
     }
 }
 
@@ -745,15 +774,18 @@ mod tests {
 
     #[test]
     fn test_eval_rpn() {
-        let token: Vec<String> = vec![
-            "2".to_string(),
-            "1".to_string(),
-            "+".to_string(),
-            "3".to_string(),
-            "*".to_string(),
-        ];
-        let actual = Solution::eval_rpn(token);
-        let expected = 9;
+        // let tokens: Vec<String> = vec![
+        //     "2".to_string(),
+        //     "1".to_string(),
+        //     "+".to_string(),
+        //     "3".to_string(),
+        //     "*".to_string(),
+        // ];
+
+        let tokens_chars = ["10","6","9","3","+","-11","*","/","*","17","+","5","+"];
+        let tokens: Vec<String> = tokens_chars.iter().map(|s| s.to_string()).collect();
+        let actual = Solution::eval_rpn(tokens);
+        let expected = 22;
         assert_eq!(actual, expected);
     }
 }
