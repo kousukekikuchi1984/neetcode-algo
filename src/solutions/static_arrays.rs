@@ -470,13 +470,55 @@ impl Solution {
     }
 
     pub fn generate_parenthesis(n: i32) -> Vec<String> {
-        vec![
-            "((()))".to_string(),
-            "(()())".to_string(),
-            "(())()".to_string(),
-            "()(())".to_string(),
-            "()()()".to_string(),
-        ]
+        let mut lefts: Vec<char> = vec!['('; n as usize];
+        let mut rights: Vec<char> = vec![')'; n as usize];
+        let mut results: Vec<String> = vec![];
+        let mut memo: HashSet<String> = HashSet::new();
+        _generate_parenthesis(lefts, rights, "".to_string(), &mut results, &mut memo);
+        return results;
+
+        fn _generate_parenthesis(
+            mut lefts: Vec<char>,
+            mut rights: Vec<char>,
+            mut tmp: String,
+            results: &mut Vec<String>,
+            memo: &mut HashSet<String>,
+        ) {
+            // left case
+            println!("lefts: {:?}, rights: {:?}, tmp: {}, memo: {:?}", lefts, rights, tmp, memo);
+            if memo.contains(&tmp) {
+                return;
+            }
+            memo.insert(tmp.clone());
+            let mut orig_rights = rights.clone();
+            let left = lefts.pop();
+            if left.is_none() {
+                while rights.len() > 0 {
+                    let right = rights.pop().unwrap();
+                    tmp.push(right);
+                }
+                if memo.contains(&tmp) {
+                    return
+                } else {
+                    results.push(tmp.clone());
+                    memo.insert(tmp.clone());
+                    return;
+                }
+
+            }
+            tmp.push(left.unwrap());
+            _generate_parenthesis(lefts.clone(), rights.clone(), tmp.clone(), results, memo);
+            // right case
+            let right = orig_rights.pop().unwrap();
+            tmp.push(right);
+            _generate_parenthesis(
+                lefts.clone(),
+                orig_rights.clone(),
+                tmp.clone(),
+                results,
+                memo,
+            );
+        }
     }
 }
 
