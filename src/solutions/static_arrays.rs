@@ -468,56 +468,34 @@ impl Solution {
         }
         stack[0]
     }
-
     pub fn generate_parenthesis(n: i32) -> Vec<String> {
-        let mut lefts: Vec<char> = vec!['('; n as usize];
-        let mut rights: Vec<char> = vec![')'; n as usize];
         let mut results: Vec<String> = vec![];
-        let mut memo: HashSet<String> = HashSet::new();
-        _generate_parenthesis(lefts, rights, "".to_string(), &mut results, &mut memo);
+        _generate_parenthesis(n, 0, 0, "".to_string(), &mut results);
         return results;
 
         fn _generate_parenthesis(
-            mut lefts: Vec<char>,
-            mut rights: Vec<char>,
+            n: i32,
+            left_count: i32,
+            right_count: i32,
             mut tmp: String,
             results: &mut Vec<String>,
-            memo: &mut HashSet<String>,
         ) {
-            // left case
-            println!("lefts: {:?}, rights: {:?}, tmp: {}, memo: {:?}", lefts, rights, tmp, memo);
-            if memo.contains(&tmp) {
+            if left_count == n && right_count == n {
+                results.push(tmp.clone());
                 return;
             }
-            memo.insert(tmp.clone());
-            let mut orig_rights = rights.clone();
-            let left = lefts.pop();
-            if left.is_none() {
-                while rights.len() > 0 {
-                    let right = rights.pop().unwrap();
-                    tmp.push(right);
-                }
-                if memo.contains(&tmp) {
-                    return
-                } else {
-                    results.push(tmp.clone());
-                    memo.insert(tmp.clone());
-                    return;
-                }
 
+            if left_count < n {
+                tmp.push('(');
+                _generate_parenthesis(n, left_count + 1, right_count, tmp.clone(), results);
+                tmp.pop();
             }
-            tmp.push(left.unwrap());
-            _generate_parenthesis(lefts.clone(), rights.clone(), tmp.clone(), results, memo);
-            // right case
-            let right = orig_rights.pop().unwrap();
-            tmp.push(right);
-            _generate_parenthesis(
-                lefts.clone(),
-                orig_rights.clone(),
-                tmp.clone(),
-                results,
-                memo,
-            );
+
+            if right_count < left_count {
+                tmp.push(')');
+                _generate_parenthesis(n, left_count, right_count + 1, tmp.clone(), results);
+                tmp.pop();
+            }
         }
     }
 }
