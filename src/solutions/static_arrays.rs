@@ -444,29 +444,39 @@ impl Solution {
                     let second = stack.pop().unwrap();
                     let first = stack.pop().unwrap();
                     stack.push(first + second);
-                },
+                }
                 "-" => {
                     let second = stack.pop().unwrap();
                     let first = stack.pop().unwrap();
                     stack.push(first - second);
-                },
+                }
                 "*" => {
                     let second = stack.pop().unwrap();
                     let first = stack.pop().unwrap();
                     stack.push(first * second);
-                },
+                }
                 "/" => {
                     let second = stack.pop().unwrap();
                     let first = stack.pop().unwrap();
                     stack.push(first / second);
-                },
+                }
                 _ => {
                     let val = token.parse::<i32>().unwrap();
                     stack.push(val);
-                },
+                }
             }
         }
         stack[0]
+    }
+
+    pub fn generate_parenthesis(n: i32) -> Vec<String> {
+        vec![
+            "((()))".to_string(),
+            "(()())".to_string(),
+            "(())()".to_string(),
+            "()(())".to_string(),
+            "()()()".to_string(),
+        ]
     }
 }
 
@@ -782,10 +792,25 @@ mod tests {
         //     "*".to_string(),
         // ];
 
-        let tokens_chars = ["10","6","9","3","+","-11","*","/","*","17","+","5","+"];
+        let tokens_chars = [
+            "10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+",
+        ];
         let tokens: Vec<String> = tokens_chars.iter().map(|s| s.to_string()).collect();
         let actual = Solution::eval_rpn(tokens);
         let expected = 22;
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn test_generate_parenthesis() {
+        let actual = Solution::generate_parenthesis(3);
+        let expected = vec![
+            "((()))".to_string(),
+            "(()())".to_string(),
+            "(())()".to_string(),
+            "()(())".to_string(),
+            "()()()".to_string(),
+        ];
         assert_eq!(actual, expected);
     }
 }
