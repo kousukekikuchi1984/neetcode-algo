@@ -500,7 +500,17 @@ impl Solution {
     }
 
     pub fn daily_temperatures(temperatures: Vec<i32>) -> Vec<i32> {
-        vec![1, 1, 4, 2, 1, 1, 0, 0]
+        // naive brute-force
+        let mut results: Vec<i32> = vec![0; temperatures.len()];
+        for i in 0..temperatures.len() {
+            for j in i+1..temperatures.len() {
+                if temperatures[i] < temperatures[j] {
+                    results[i] = (j - i) as i32;
+                    break;
+                }
+            }
+        }
+        results
     }
 }
 
