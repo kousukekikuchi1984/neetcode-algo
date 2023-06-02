@@ -500,15 +500,16 @@ impl Solution {
     }
 
     pub fn daily_temperatures(temperatures: Vec<i32>) -> Vec<i32> {
-        // naive brute-force
+        // stack solution
         let mut results: Vec<i32> = vec![0; temperatures.len()];
+        let mut stack_pointers: Vec<usize> = vec![];
         for i in 0..temperatures.len() {
-            for j in i+1..temperatures.len() {
-                if temperatures[i] < temperatures[j] {
-                    results[i] = (j - i) as i32;
-                    break;
-                }
+            while !stack_pointers.is_empty() && temperatures[i] > temperatures[*stack_pointers.last().unwrap()] {
+                // swap
+                let index = stack_pointers.pop().unwrap();
+                results[index] = (i - index) as i32;
             }
+            stack_pointers.push(i);
         }
         results
     }
