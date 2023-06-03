@@ -516,7 +516,20 @@ impl Solution {
         results
     }
     pub fn car_fleet(target: i32, position: Vec<i32>, speed: Vec<i32>) -> i32 {
-        3
+        let mut cars: Vec<(f64, f64)> = vec![];
+        for i in 0..position.len() {
+            cars.push((position[i] as f64, speed[i] as f64));
+        }
+        cars.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+
+        let mut stack = vec![];
+        for (pos, speed) in cars.iter().rev() {
+            stack.push((target as f64 - pos) / speed);
+            if stack.len() >= 2 && stack.last() <= stack.get(stack.len() - 2) {
+                stack.pop();
+            }
+        }
+        stack.len() as i32
     }
 }
 
@@ -864,11 +877,15 @@ mod tests {
 
     #[test]
     fn test_car_fleet() {
-        let positions = vec![10, 8, 0, 5, 3];
-        let speed = vec![2, 4, 1, 1, 3];
-        let target = 12;
+        // let positions = vec![10, 8, 0, 5, 3];
+        // let speed = vec![2, 4, 1, 1, 3];
+        // let target = 12;
+        // let expected = 3;
+        let positions = vec![0,4,2];
+        let speed = vec![2,1,3];
+        let target = 10;
+        let expected = 1;
         let actual = Solution::car_fleet(target, positions, speed);
-        let expected = 3;
         assert_eq!(actual, expected);
     }
 }
