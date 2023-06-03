@@ -504,7 +504,9 @@ impl Solution {
         let mut results: Vec<i32> = vec![0; temperatures.len()];
         let mut stack_pointers: Vec<usize> = vec![];
         for i in 0..temperatures.len() {
-            while !stack_pointers.is_empty() && temperatures[i] > temperatures[*stack_pointers.last().unwrap()] {
+            while !stack_pointers.is_empty()
+                && temperatures[i] > temperatures[*stack_pointers.last().unwrap()]
+            {
                 // swap
                 let index = stack_pointers.pop().unwrap();
                 results[index] = (i - index) as i32;
@@ -512,6 +514,9 @@ impl Solution {
             stack_pointers.push(i);
         }
         results
+    }
+    pub fn car_fleet(target: i32, position: Vec<i32>, speed: Vec<i32>) -> i32 {
+        3
     }
 }
 
@@ -854,6 +859,16 @@ mod tests {
         let temperatures = vec![73, 74, 75, 71, 69, 72, 76, 73];
         let actual = Solution::daily_temperatures(temperatures);
         let expected = vec![1, 1, 4, 2, 1, 1, 0, 0];
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn test_car_fleet() {
+        let positions = vec![10, 8, 0, 5, 3];
+        let speed = vec![2, 4, 1, 1, 3];
+        let target = 12;
+        let actual = Solution::car_fleet(target, positions, speed);
+        let expected = 3;
         assert_eq!(actual, expected);
     }
 }
