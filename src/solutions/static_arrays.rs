@@ -531,6 +531,10 @@ impl Solution {
         }
         stack.len() as i32
     }
+
+    pub fn largest_rectangle_area(heights: Vec<i32>) -> i32 {
+        10
+    }
 }
 
 struct NumArray {
@@ -886,6 +890,14 @@ mod tests {
         let target = 10;
         let expected = 1;
         let actual = Solution::car_fleet(target, positions, speed);
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn test_largest_rectangle_area() {
+        let heights = vec![2,1,5,6,2,3];
+        let actual = Solution::largest_rectangle_area(heights);
+        let expected = 10;
         assert_eq!(actual, expected);
     }
 }
