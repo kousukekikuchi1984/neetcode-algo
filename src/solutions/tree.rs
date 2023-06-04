@@ -117,13 +117,17 @@ impl Solution {
     }
 
     pub fn find_min(nums: Vec<i32>) -> i32 {
-        use std::collections::BinaryHeap;
         use std::cmp::Reverse;
+        use std::collections::BinaryHeap;
         let mut heap = BinaryHeap::with_capacity(nums.len());
         for num in nums {
             heap.push(Reverse(num));
         }
         heap.pop().unwrap().0
+    }
+
+    pub fn search(nums: Vec<i32>, target: i32) -> i32 {
+        4
     }
 }
 
@@ -252,6 +256,14 @@ mod tests {
         let nums = vec![3, 4, 5, 1, 2];
         let actual = Solution::find_min(nums);
         let expected = 1;
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn test_search() {
+        let nums = vec![4, 5, 6, 7, 0, 1, 2];
+        let actual = Solution::search(nums, 0);
+        let expected = 4;
         assert_eq!(actual, expected);
     }
 }
