@@ -117,7 +117,13 @@ impl Solution {
     }
 
     pub fn find_min(nums: Vec<i32>) -> i32 {
-        1
+        use std::collections::BinaryHeap;
+        use std::cmp::Reverse;
+        let mut heap = BinaryHeap::with_capacity(nums.len());
+        for num in nums {
+            heap.push(Reverse(num));
+        }
+        heap.pop().unwrap().0
     }
 }
 
