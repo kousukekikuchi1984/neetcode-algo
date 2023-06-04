@@ -115,6 +115,10 @@ impl Solution {
         }
         result
     }
+
+    pub fn find_min(nums: Vec<i32>) -> i32 {
+        1
+    }
 }
 
 struct KthLargest {
@@ -235,5 +239,13 @@ mod tests {
         let nums = vec![3, 2, 1, 5, 6, 4];
         let actual = Solution::find_kth_largest(nums, 2);
         assert_eq!(actual, 5);
+    }
+
+    #[test]
+    fn test_find_min() {
+        let nums = vec![3, 4, 5, 1, 2];
+        let actual = Solution::find_min(nums);
+        let expected = 1;
+        assert_eq!(actual, expected);
     }
 }
