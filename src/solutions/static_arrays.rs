@@ -533,72 +533,47 @@ impl Solution {
     }
 
     pub fn largest_rectangle_area(heights: Vec<i32>) -> i32 {
-        // 左と右から戻らずに面積を数える
-        // result = left + right - heights の関係になる
-        // count left
-        let mut lefts: Vec<i32> = vec![0; heights.len()];
-        let mut stack: Vec<(usize, i32)> = vec![];
         let len = heights.len();
+        let mut lefts: Vec<i32> = vec![0; len];
+        let mut rights: Vec<i32> = vec![0; len];
+
+        // 左からの計算
+        let mut stack: Vec<usize> = Vec::new();
         for i in 0..len {
-            if !stack.is_empty() {
-                if stack.last().unwrap().1 > heights[i] {
-                    let last = stack.pop().unwrap();
-                    let area = (i - last.0) as i32 * last.1;
-                    lefts[last.0] = area;
-                }
+            while !stack.is_empty() && heights[*stack.last().unwrap()] >= heights[i] {
+                stack.pop();
             }
-            stack.push((i, heights[i]));
-        }
-        let mut last_index = len - 1;
-        while !stack.is_empty() {
-            let last = stack.pop().unwrap();
-            if last.0 == last_index {
-                lefts[last.0] = last.1;
+            if stack.is_empty() {
+                lefts[i] = heights[i] * (i + 1) as i32;
             } else {
-                lefts[last.0] = (last_index - last.0) as i32 * last.1;
-                if heights[last_index] < last.1 {
-                    last_index = last.0;
-                }
+                lefts[i] = heights[i] * (i - stack.last().unwrap()) as i32;
             }
+            stack.push(i);
         }
 
-        // count right
-        let mut rights: Vec<i32> = vec![0; len];
-        for idx in 0..len {
-            let i = len - 1 - idx;
-            if !stack.is_empty() {
-                if stack.last().unwrap().1 > heights[i] {
-                    let last = stack.pop().unwrap();
-                    let area = (last.0 - i) as i32 * last.1;
-                    rights[last.0] = area;
-                }
+        // 右からの計算
+        stack.clear();
+        for i in (0..len).rev() {
+            while !stack.is_empty() && heights[*stack.last().unwrap()] >= heights[i] {
+                stack.pop();
             }
-            stack.push((i, heights[i]));
-        }
-        let mut last_index = 0;
-        while !stack.is_empty() {
-            let last = stack.pop().unwrap();
-            if last.0 == last_index {
-                rights[last.0] = last.1;
+            if stack.is_empty() {
+                rights[i] = heights[i] * (len - i) as i32;
             } else {
-                rights[last.0] = (last.0 - last_index) as i32 * last.1;
-                if heights[last_index] < last.1 {
-                    last_index = last.0;
-                }
+                rights[i] = heights[i] * (stack.last().unwrap() - i) as i32;
             }
+            stack.push(i);
         }
-        println!("lefts: {:?}", lefts);
-        println!("rights: {:?}", rights);
-        println!("heights: {:?}", heights);
-        let result = lefts
+
+        // 最大の面積を計算
+        let result = heights
             .iter()
-            .zip(rights.iter())
-            .zip(heights.iter())
-            .map(|((&x, &y), &z)| x + y - z)
+            .zip(lefts.iter().zip(rights.iter()))
+            .map(|(&h, (&left, &right))| left + right - h)
             .max()
             .unwrap();
-        println!("results: {:?}", result);
-        return result;
+
+        result
     }
 }
 
