@@ -533,7 +533,72 @@ impl Solution {
     }
 
     pub fn largest_rectangle_area(heights: Vec<i32>) -> i32 {
-        10
+        // 左と右から戻らずに面積を数える
+        // result = left + right - heights の関係になる
+        // count left
+        let mut lefts: Vec<i32> = vec![0; heights.len()];
+        let mut stack: Vec<(usize, i32)> = vec![];
+        let len = heights.len();
+        for i in 0..len {
+            if !stack.is_empty() {
+                if stack.last().unwrap().1 > heights[i] {
+                    let last = stack.pop().unwrap();
+                    let area = (i - last.0) as i32 * last.1;
+                    lefts[last.0] = area;
+                }
+            }
+            stack.push((i, heights[i]));
+        }
+        let mut last_index = len - 1;
+        while !stack.is_empty() {
+            let last = stack.pop().unwrap();
+            if last.0 == last_index {
+                lefts[last.0] = last.1;
+            } else {
+                lefts[last.0] = (last_index - last.0) as i32 * last.1;
+                if heights[last_index] < last.1 {
+                    last_index = last.0;
+                }
+            }
+        }
+
+        // count right
+        let mut rights: Vec<i32> = vec![0; len];
+        for idx in 0..len {
+            let i = len - 1 - idx;
+            if !stack.is_empty() {
+                if stack.last().unwrap().1 > heights[i] {
+                    let last = stack.pop().unwrap();
+                    let area = (last.0 - i) as i32 * last.1;
+                    rights[last.0] = area;
+                }
+            }
+            stack.push((i, heights[i]));
+        }
+        let mut last_index = 0;
+        while !stack.is_empty() {
+            let last = stack.pop().unwrap();
+            if last.0 == last_index {
+                rights[last.0] = last.1;
+            } else {
+                rights[last.0] = (last.0 - last_index) as i32 * last.1;
+                if heights[last_index] < last.1 {
+                    last_index = last.0;
+                }
+            }
+        }
+        println!("lefts: {:?}", lefts);
+        println!("rights: {:?}", rights);
+        println!("heights: {:?}", heights);
+        let result = lefts
+            .iter()
+            .zip(rights.iter())
+            .zip(heights.iter())
+            .map(|((&x, &y), &z)| x + y - z)
+            .max()
+            .unwrap();
+        println!("results: {:?}", result);
+        return result;
     }
 }
 
@@ -885,8 +950,8 @@ mod tests {
         // let speed = vec![2, 4, 1, 1, 3];
         // let target = 12;
         // let expected = 3;
-        let positions = vec![0,4,2];
-        let speed = vec![2,1,3];
+        let positions = vec![0, 4, 2];
+        let speed = vec![2, 1, 3];
         let target = 10;
         let expected = 1;
         let actual = Solution::car_fleet(target, positions, speed);
@@ -895,7 +960,7 @@ mod tests {
 
     #[test]
     fn test_largest_rectangle_area() {
-        let heights = vec![2,1,5,6,2,3];
+        let heights = vec![2, 1, 5, 6, 2, 3];
         let actual = Solution::largest_rectangle_area(heights);
         let expected = 10;
         assert_eq!(actual, expected);
