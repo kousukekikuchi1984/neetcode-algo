@@ -381,10 +381,21 @@ impl Solution {
     }
 }
 
+struct TimeMap {}
+
+impl TimeMap {
+    fn new() -> Self {}
+
+    fn set(&self, key: String, value: String, timestamp: i32) {}
+
+    fn get(&self, key: String, timestamp: i32) -> String {}
+}
+
 #[cfg(test)]
 mod tests {
     use super::Solution;
     use super::TreeNode;
+    use crate::solutions::search::TimeMap;
     use std::cell::RefCell;
     use std::rc::Rc;
 
@@ -483,5 +494,16 @@ mod tests {
         }
         let actual = Solution::has_path_sum(root, 9);
         assert_eq!(actual, true);
+    }
+
+    #[test]
+    fn test_time_map() {
+        let mut map = TimeMap::new();
+        map.set("foo".to_string(), "bar".to_string(), 1);
+        assert_eq!(map.get("foo".to_string(), 1), "bar".to_string());
+        assert_eq!(map.get("foo".to_string(), 3), "bar".to_string());
+        map.set("foo".to_string(), "bar2".to_string(), 4);
+        assert_eq!(map.get("foo".to_string(), 4), "bar2".to_string());
+        assert_eq!(map.get("foo".to_string(), 5), "bar2".to_string());
     }
 }
