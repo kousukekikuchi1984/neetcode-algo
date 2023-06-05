@@ -1,5 +1,6 @@
 use std::cell::RefCell;
 use std::cmp::Ordering;
+use std::collections::HashMap;
 use std::rc::Rc;
 
 struct Solution {}
@@ -381,14 +382,66 @@ impl Solution {
     }
 }
 
-struct TimeMap {}
+struct TimeMap {
+    time: HashMap<String, Vec<(i32, String)>>,
+}
 
 impl TimeMap {
-    fn new() -> Self {}
+    fn new() -> Self {
+        Self {
+            // size is determined as spec
+            time: HashMap::with_capacity(100),
+        }
+    }
 
-    fn set(&self, key: String, value: String, timestamp: i32) {}
+    fn set(&mut self, key: String, value: String, timestamp: i32) {
+        self.time.entry(key).or_insert(vec![]);
+        let mut val = self.time.get(&key).unwrap();
+        let mut left = 0;
+        let mut right = val.len() - 1;
+        while left < right {
+            let mut mid = (left + right) / 2;
+            if val[mid].0 == timestamp {
+                unreachable!("timestamp is unique!");
+            }
+            if val[mid].0 > timestamp {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        self.time
+            .get_mut(&key)
+            .unwrap()
+            .insert(left, (timestamp, value));
+    }
 
-    fn get(&self, key: String, timestamp: i32) -> String {}
+    fn get(&self, key: String, timestamp: i32) -> String {
+        match self.time.get(&key) {
+            Some(val) => {
+                if val.is_empty() {
+                    return "".to_string();
+                }
+
+                let val = val.clone();
+                let mut left = 0;
+                let mut right = val.len() - 1;
+                while left < right {
+                    let mut mid = (left + right) / 2;
+                    if val[mid].0 == timestamp {
+                        return val[mid].clone().1;
+                    }
+                    if val[mid].0 > timestamp {
+                        right = mid + 1;
+                    } else {
+                        left = mid - 1;
+                    }
+                }
+                return val[left - 1].clone().1;
+            }
+            None => return "".to_string(),
+        }
+    }
 }
 
 #[cfg(test)]
