@@ -395,52 +395,26 @@ impl TimeMap {
     }
 
     fn set(&mut self, key: String, value: String, timestamp: i32) {
-        self.time.entry(key).or_insert(vec![]);
-        let mut val = self.time.get(&key).unwrap();
-        let mut left = 0;
-        let mut right = val.len() - 1;
-        while left < right {
-            let mut mid = (left + right) / 2;
-            if val[mid].0 == timestamp {
-                unreachable!("timestamp is unique!");
-            }
-            if val[mid].0 > timestamp {
-                right = mid - 1;
-            } else {
-                left = mid + 1;
-            }
-        }
-        self.time
-            .get_mut(&key)
-            .unwrap()
-            .insert(left, (timestamp, value));
+        // timestamp is ascending order
+        self.time.entry(key).or_default().push((timestamp, value));
     }
 
     fn get(&self, key: String, timestamp: i32) -> String {
-        match self.time.get(&key) {
-            Some(val) => {
-                if val.is_empty() {
-                    return "".to_string();
+        let mut res = String::new();
+        if let Some(vals) = self.time.get(&key) {
+            let mut left = 0;
+            let mut right = vals.len();
+            while left < right {
+                let mid = left + (right - left) / 2;
+                if timestamp < vals[mid].0 {
+                    right = mid;
+                } else {
+                    res = vals[mid].1.clone();
+                    left = mid + 1;
                 }
-
-                let val = val.clone();
-                let mut left = 0;
-                let mut right = val.len() - 1;
-                while left < right {
-                    let mut mid = (left + right) / 2;
-                    if val[mid].0 == timestamp {
-                        return val[mid].clone().1;
-                    }
-                    if val[mid].0 > timestamp {
-                        right = mid + 1;
-                    } else {
-                        left = mid - 1;
-                    }
-                }
-                return val[left - 1].clone().1;
             }
-            None => return "".to_string(),
         }
+        res
     }
 }
 
