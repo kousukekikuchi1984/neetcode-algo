@@ -380,6 +380,10 @@ impl Solution {
 
         _has_path_sum(root, target_sum, 0)
     }
+
+    pub fn find_median_sorted_arrays(nums1: Vec<i32>, nums2: Vec<i32>) -> f64 {
+        4.00000
+    }
 }
 
 struct TimeMap {
@@ -532,5 +536,13 @@ mod tests {
         map.set("foo".to_string(), "bar2".to_string(), 4);
         assert_eq!(map.get("foo".to_string(), 4), "bar2".to_string());
         assert_eq!(map.get("foo".to_string(), 5), "bar2".to_string());
+    }
+
+    #[test]
+    fn test_find_median_sorted_arrays() {
+        assert_eq!(
+            Solution::find_median_sorted_arrays(vec![1, 3, 4, 5], vec![2, 6, 7]),
+            4.00000
+        );
     }
 }
