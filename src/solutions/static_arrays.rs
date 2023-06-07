@@ -577,7 +577,19 @@ impl Solution {
     }
 
     pub fn max_profit(prices: Vec<i32>) -> i32 {
-        5
+        let mut result = 0;
+        let mut buy = 0;
+        let mut sell = 1;
+        while sell < prices.len() {
+            if prices[sell] <= prices[buy] {
+                buy = sell;
+            } else {
+                let profit = prices[sell] - prices[buy];
+                result = result.max(profit);
+            }
+            sell += 1;
+        }
+        result
     }
 }
 
