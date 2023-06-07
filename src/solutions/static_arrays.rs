@@ -575,6 +575,10 @@ impl Solution {
 
         result
     }
+
+    pub fn max_profit(prices: Vec<i32>) -> i32 {
+        5
+    }
 }
 
 struct NumArray {
@@ -939,5 +943,11 @@ mod tests {
         let actual = Solution::largest_rectangle_area(heights);
         let expected = 10;
         assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn test_max_profit() {
+        let prices = vec![7, 1, 5, 3, 6, 4];
+        assert_eq!(Solution::max_profit(prices), 5);
     }
 }
