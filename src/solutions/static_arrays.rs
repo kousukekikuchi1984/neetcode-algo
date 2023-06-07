@@ -593,7 +593,14 @@ impl Solution {
     }
 
     pub fn check_inclusion(s1: String, s2: String) -> bool {
-        true
+        let mut base: Vec<char> = s1.chars().collect();
+        base.sort_unstable();
+        let target: Vec<char> = s2.chars().collect();
+        target.windows(s1.len()).any(|substring| {
+            let mut substring = substring.to_vec();
+            substring.sort_unstable();
+            substring == base
+        })
     }
 }
 
