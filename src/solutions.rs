@@ -5,6 +5,7 @@ mod dynamic_programming;
 mod fibonacci;
 mod graph;
 mod hash;
+mod math;
 mod queues;
 mod search;
 mod singly_linked_list;
