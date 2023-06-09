@@ -28,48 +28,60 @@ impl Solution {
     }
 
     pub fn min_window(s: String, t: String) -> String {
-        fn contains_submap(small: &HashMap<char, usize>, large: &HashMap<char, usize>) -> bool {
-            for (key, value) in small.iter() {
-                if !large.contains_key(key) || large.get(key).copied().unwrap_or(0) < *value {
-                    return false;
-                }
-            }
-            true
-        }
-
-        if t == String::new() || s.len() < t.len() {
-            return String::new();
-        }
-
-        let mut target: HashMap<char, usize> = HashMap::new();
+        let mut target_counts: HashMap<char, usize> = HashMap::new();
         for c in t.chars() {
-            *target.entry(c).or_insert(0) += 1;
+            *target_counts.entry(c).or_insert(0) += 1;
         }
-        let mut result = "".to_string();
+
+        let s_chars: Vec<char> = s.chars().collect();
+        let mut window_counts: HashMap<char, usize> = HashMap::new();
+
         let mut left = 0;
         let mut right = 0;
-        let s_chars: Vec<char> = s.chars().collect();
+        let mut min_window_size = s.len() + 1;
+        let mut min_window_start = 0;
 
-        let mut seek: HashMap<char, usize> = HashMap::new();
+        let mut matched_chars = 0;
 
         while right < s_chars.len() {
             let c = s_chars[right];
-            *seek.entry(c).or_insert(0) += 1;
+            *window_counts.entry(c).or_insert(0) += 1;
 
-            while contains_submap(&target, &seek) {
-                let candidate = s_chars[left..=right].iter().collect::<String>();
-                if result.is_empty() || candidate.len() < result.len() {
-                    result = candidate;
+            if let Some(&target_count) = target_counts.get(&c) {
+                if window_counts[&c] <= target_count {
+                    matched_chars += 1;
                 }
-                let pop = s_chars[left];
-                *seek.get_mut(&pop).unwrap() -= 1;
+            }
+
+            while matched_chars == t.len() {
+                let window_size = right - left + 1;
+                if window_size < min_window_size {
+                    min_window_size = window_size;
+                    min_window_start = left;
+                }
+
+                let left_char = s_chars[left];
+                *window_counts.get_mut(&left_char).unwrap() -= 1;
+
+                if let Some(&target_count) = target_counts.get(&left_char) {
+                    if window_counts[&left_char] < target_count {
+                        matched_chars -= 1;
+                    }
+                }
+
                 left += 1;
             }
 
             right += 1;
         }
 
-        result
+        if min_window_size > s.len() {
+            "".to_string()
+        } else {
+            s_chars[min_window_start..min_window_start + min_window_size]
+                .iter()
+                .collect()
+        }
     }
 }
 
