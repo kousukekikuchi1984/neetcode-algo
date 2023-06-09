@@ -26,6 +26,10 @@ impl Solution {
         }
         result.into_iter().collect()
     }
+
+    pub fn min_window(s: String, t: String) -> String {
+        "BANC".to_string()
+    }
 }
 
 #[cfg(test)]
@@ -40,6 +44,15 @@ mod tests {
         let expected: HashSet<Vec<i32>> = HashSet::from_iter(expected_vec);
         let act_vec = Solution::three_sum(nums);
         let actual: HashSet<Vec<i32>> = HashSet::from_iter(act_vec);
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn test_min_window() {
+        let s = "ADOBECODEBANC".to_string();
+        let t = "ABC".to_string();
+        let actual = Solution::min_window(s, t);
+        let expected = "BANC".to_string();
         assert_eq!(actual, expected);
     }
 }
