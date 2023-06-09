@@ -26,9 +26,64 @@ impl Solution {
         }
         result.into_iter().collect()
     }
-
     pub fn min_window(s: String, t: String) -> String {
-        "BANC".to_string()
+        fn contains_submap(small: &HashMap<char, usize>, large: &HashMap<char, usize>) -> bool {
+            for (key, value) in small.iter() {
+                if !large.contains_key(key) || *large.get(key).unwrap() < *value {
+                    return false;
+                }
+            }
+            true
+        }
+
+        let mut target: HashMap<char, usize> = HashMap::with_capacity(t.len());
+        for c in t.chars() {
+            *target.entry(c).or_insert(0) += 1;
+        }
+        let mut result = "".to_string();
+        let mut left = 0;
+        let mut right = 0;
+        let english_letters = 52;
+        let mut seek: HashMap<char, usize> = HashMap::with_capacity(english_letters);
+
+        let s_chars: Vec<char> = s.chars().collect(); // StringをVec<char>に変換
+
+        while right < s_chars.len() {
+            println!("right: {}, left: {}", right, left);
+            let c = s_chars[right];
+            *seek.entry(c).or_insert(0) += 1;
+
+            if contains_submap(&target, &seek) {
+                let candidate = s_chars[left..=right].iter().collect::<String>();
+                if result.is_empty() || candidate.len() < result.len() {
+                    result = candidate;
+                }
+                left += 1;
+                while left <= right {
+                    let pop = s_chars[left];
+                    let count = seek.entry(pop).or_insert(0);
+                    *count -= 1;
+
+                    if contains_submap(&target, &seek) {
+                        let candidate = s_chars[left..=right].iter().collect::<String>();
+                        if candidate.len() < result.len() {
+                            result = candidate;
+                        }
+                        left += 1;
+                        continue;
+                    }
+
+                    if target.contains_key(&c) {
+                        break;
+                    } else {
+                        left += 1;
+                    }
+                }
+            }
+            right += 1;
+        }
+
+        result
     }
 }
 
