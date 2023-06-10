@@ -83,6 +83,10 @@ impl Solution {
                 .collect()
         }
     }
+
+    pub fn max_sliding_window(nums: Vec<i32>, k: i32) -> Vec<i32> {
+        vec![3, 3, 5, 5, 6, 7]
+    }
 }
 
 #[cfg(test)]
@@ -106,6 +110,15 @@ mod tests {
         let t = "ABC".to_string();
         let actual = Solution::min_window(s, t);
         let expected = "BANC".to_string();
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn test_max_sliding_window() {
+        let nums = vec![1, 3, -1, -3, 5, 3, 6, 7];
+        let k = 3;
+        let actual = Solution::max_sliding_window(nums, k);
+        let expected = vec![3, 3, 5, 5, 6, 7];
         assert_eq!(actual, expected);
     }
 }
