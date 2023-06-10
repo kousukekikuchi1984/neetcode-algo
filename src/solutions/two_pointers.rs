@@ -85,28 +85,38 @@ impl Solution {
     }
 
     pub fn max_sliding_window(nums: Vec<i32>, k: i32) -> Vec<i32> {
+        use std::collections::VecDeque;
         let k = k as usize;
-        let mut result = vec![];
-        let mut subarray = nums[0..k].to_vec();
-        let mut current = *subarray.iter().max().unwrap();
-        result.push(current);
-        let mut cur = 1;
+        let mut output = vec![];
+        let mut deque: VecDeque<usize> = VecDeque::new();
+        let n = nums.len();
+        let (mut left, mut right) = (0, 0);
 
-        while cur + k - 1 < nums.len() {
-            let val = nums[cur + k - 1];
-            let prev = subarray.remove(0);
-            if current == prev {
-                subarray.push(val);
-                current = *subarray.iter().max().unwrap();
-                result.push(current);
-            } else {
-                current = current.max(val);
-                result.push(current);
-                subarray.push(val);
+        while right < n {
+            // pop smaller value from queue
+            while let Some(&back) = deque.back() {
+                if nums[back] < nums[right] {
+                    deque.pop_back();
+                } else {
+                    break;
+                }
             }
-            cur += 1;
+
+            deque.push_back(right);
+
+            // remove left val from window
+            if left > deque[0] {
+                deque.pop_front();
+            }
+
+            if (right + 1) >= k {
+                output.push(nums[deque[0]]);
+                left += 1;
+            }
+            right += 1;
         }
-        result
+
+        output
     }
 }
 
