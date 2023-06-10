@@ -85,7 +85,28 @@ impl Solution {
     }
 
     pub fn max_sliding_window(nums: Vec<i32>, k: i32) -> Vec<i32> {
-        vec![3, 3, 5, 5, 6, 7]
+        let k = k as usize;
+        let mut result = vec![];
+        let mut subarray = nums[0..k].to_vec();
+        let mut current = *subarray.iter().max().unwrap();
+        result.push(current);
+        let mut cur = 1;
+
+        while cur + k - 1 < nums.len() {
+            let val = nums[cur + k - 1];
+            let prev = subarray.remove(0);
+            if current == prev {
+                subarray.push(val);
+                current = *subarray.iter().max().unwrap();
+                result.push(current);
+            } else {
+                current = current.max(val);
+                result.push(current);
+                subarray.push(val);
+            }
+            cur += 1;
+        }
+        result
     }
 }
 
