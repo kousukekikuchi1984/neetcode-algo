@@ -107,7 +107,46 @@ impl Solution {
         head
     }
 
-    pub fn reorder_list(head: &mut Option<Box<ListNode>>) {}
+    pub fn reorder_list(head: &mut Option<Box<ListNode>>) {
+        // 1. determine the partition by using fast and slow pointers
+        let mut fast = head;
+        let mut slow = head;
+        while fast.is_some() && fast.next.is_some() {
+            slow = slow.next;
+            fast = fast.next;
+            if fast.next.is_none() {
+                // odd pattern
+                slow = slow.next;
+                break;
+            } else {
+                fast.next = fast;
+            }
+        }
+
+        // 2. reverse the latter list.
+        // start -> slow
+        let mut start = slow;
+        let mut current = start;
+        while let Some(mut boxed_head) = current {
+            current = &mut boxed_head.next.take();
+            boxed_head.next = prev;
+            prev = Some(boxed_head);
+        }
+
+        // 3. pick one by one.
+        let mut normal = head;
+        let mut normal_next = head.next;
+        let mut reverse = current;
+        let mut reverse_next = head.next;
+        while reverse.is_some() {
+            tmp_normal = normal.next;
+            normal.next = reverse;
+            reverse.next = normal_next;
+            normal = normal_next;
+            normal_next = tmp_normal;
+            reverse = reverse_next;
+        }
+    }
 }
 
 #[cfg(test)]
