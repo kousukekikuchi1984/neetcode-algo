@@ -91,6 +91,23 @@ impl Solution {
         }
         slow.clone()
     }
+
+    pub fn create_linked_list(nums: &[i32]) -> Option<Box<ListNode>> {
+        let mut head = None;
+        let mut current = &mut head;
+
+        for &val in nums {
+            let new_node = Some(Box::new(ListNode::new(val)));
+            *current = new_node;
+            if let Some(node) = current {
+                current = &mut node.next;
+            }
+        }
+
+        head
+    }
+
+    pub fn reorder_list(head: &mut Option<Box<ListNode>>) {}
 }
 
 #[cfg(test)]
@@ -101,5 +118,14 @@ mod tests {
     #[test]
     fn test_list() {
         Solution::reverse_list(None);
+    }
+
+    #[test]
+    fn test_reorder_list() {
+        let nums = [1, 2, 3, 4, 5];
+        let mut head = Solution::create_linked_list(&nums);
+        Solution::reorder_list(&mut head);
+        let mut expected = Solution::create_linked_list(&[1, 5, 2, 4, 3]);
+        assert_eq!(head, expected);
     }
 }
