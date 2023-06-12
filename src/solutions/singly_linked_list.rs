@@ -108,44 +108,47 @@ impl Solution {
     }
 
     pub fn reorder_list(head: &mut Option<Box<ListNode>>) {
-        // 1. determine the partition by using fast and slow pointers
-        let mut fast = head;
-        let mut slow = head;
-        while fast.is_some() && fast.next.is_some() {
-            slow = slow.next;
-            fast = fast.next;
-            if fast.next.is_none() {
-                // odd pattern
-                slow = slow.next;
-                break;
-            } else {
-                fast.next = fast;
+        fn get_list_middle(head: &mut Option<Box<ListNode>>) -> Option<Box<ListNode>> {
+            let (mut fast, mut slow) = (&head.clone(), head);
+            while fast.is_some() {
+                fast = &(fast.as_ref().unwrap().next);
+                if fast.is_some() {
+                    fast = &fast.as_ref().unwrap().next;
+                    slow = &mut (slow.as_mut().unwrap().next);
+                }
+            }
+            slow.as_mut().unwrap().next.take()
+        }
+
+        fn reverse_list(mut head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
+            let mut prev = None;
+            while let Some(mut curr) = head {
+                head = curr.next;
+                curr.next = prev;
+                prev = Some(curr);
+            }
+            prev
+        }
+
+        fn merge_lists(mut head1: &mut Option<Box<ListNode>>, mut head2: Option<Box<ListNode>>) {
+            let mut first = head1;
+            let mut second = head2;
+            while first.is_some() && second.is_some() {
+                let mut first_next = first.as_mut().unwrap().next.take();
+                let mut second_next = second.as_mut().unwrap().next.take();
+                first.as_mut().unwrap().next = second;
+                first.as_mut().unwrap().next.as_mut().unwrap().next = first_next;
+                first = &mut (first.as_mut().unwrap().next.as_mut().unwrap().next);
+                second = second_next;
+            }
+            if second.is_some() {
+                first = &mut (second);
             }
         }
 
-        // 2. reverse the latter list.
-        // start -> slow
-        let mut start = slow;
-        let mut current = start;
-        while let Some(mut boxed_head) = current {
-            current = &mut boxed_head.next.take();
-            boxed_head.next = prev;
-            prev = Some(boxed_head);
-        }
-
-        // 3. pick one by one.
-        let mut normal = head;
-        let mut normal_next = head.next;
-        let mut reverse = current;
-        let mut reverse_next = head.next;
-        while reverse.is_some() {
-            tmp_normal = normal.next;
-            normal.next = reverse;
-            reverse.next = normal_next;
-            normal = normal_next;
-            normal_next = tmp_normal;
-            reverse = reverse_next;
-        }
+        let mut head2 = get_list_middle(head);
+        head2 = reverse_list(head2);
+        merge_lists(head, head2);
     }
 }
 
