@@ -150,6 +150,44 @@ impl Solution {
         head2 = reverse_list(head2);
         merge_lists(head, head2);
     }
+
+    fn reverse_k_group(head: Option<Box<ListNode>>, k: i32) -> Option<Box<ListNode>> {
+        if k == 1 {
+            return head;
+        }
+
+        let mut stack: LinkedList<Box<ListNode>> = LinkedList::new();
+        let mut dummy = ListNode::new(0);
+        let mut prev = &mut dummy;
+        let mut cur = head;
+
+        while let Some(mut node) = cur {
+            for _ in 0..k {
+                if let Some(next_node) = node.next {
+                    stack.push_back(node);
+                    node = *next_node;
+                } else {
+                    stack.push_back(node);
+                    break;
+                }
+            }
+
+            if stack.len() == k as usize {
+                while let Some(mut popped_node) = stack.pop_back() {
+                    prev.next = Some(popped_node);
+                    prev = prev.next.as_mut().unwrap();
+                }
+            } else {
+                while let Some(popped_node) = stack.pop_back() {
+                    prev.next = Some(popped_node);
+                }
+            }
+
+            cur = node.next;
+        }
+
+        dummy.next
+    }
 }
 
 #[cfg(test)]
